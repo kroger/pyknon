@@ -10,12 +10,7 @@
 #              software is distributed.
 #-----------------------------------------------------------------------------
 
-import struct
-import sys
-import math
-
-PYTHON3 = True if sys.version_info.major == 3 else False
-
+import struct,  sys,  math
 
 # TICKSPERBEAT is the number of "ticks" (time measurement in the MIDI file) that
 # corresponds to one beat. This number is somewhat arbitrary, but should be chosen
@@ -35,20 +30,6 @@ class MIDIEvent:
         self.time=0
         self.ord = 0
         
-    def __lt__(self, other):
-        ''' Sorting function for events.'''
-        if self.time < other.time:
-            return True
-        elif self.time > other.time:
-            return False
-        else:
-            if self.ord < other.ord:
-                return True
-            elif self.ord > other.ord:
-                return False
-            else:
-                return False
-
     def __cmp__(self, other):
         ''' Sorting function for events.'''
         if self.time < other.time:
@@ -242,10 +223,7 @@ class MIDITrack:
         '''
         self.headerString = struct.pack('cccc','M','T','r','k')
         self.dataLength = 0 # Is calculated after the data is in place
-        if PYTHON3:
-            self.MIDIdata = b""
-        else:
-            self.MIDIdata = ""
+        self.MIDIdata = ""
         self.closed = False
         self.eventList = []
         self.MIDIEventList = []
@@ -399,16 +377,13 @@ class MIDITrack:
                 self.MIDIEventList.append(event)
 
             else:
-                print ("Error in MIDITrack: Unknown event type")
+                print "Error in MIDITrack: Unknown event type"
                 sys.exit(2)
             
         # Assumptions in the code expect the list to be time-sorted.
         # self.MIDIEventList.sort(lambda x, y: x.time - y.time)
 
-        if PYTHON3:
-            self.MIDIEventList.sort(key=lambda x: (x.time))
-        else:
-            self.MIDIEventList.sort(lambda x, y: int( 1000 * (x.time - y.time)))
+        self.MIDIEventList.sort(lambda x, y: int( 1000 * (x.time - y.time)))
 
         if self.deinterleave:    
             self.deInterleaveNotes()
@@ -427,22 +402,14 @@ class MIDITrack:
         tempDict = {}
         for item in self.eventList:
             tempDict[item] = 1
-
-        if PYTHON3:
-            self.eventList = list(tempDict.keys())
-        else:
-            self.eventList = tempDict.keys()
+            
+        self.eventList = tempDict.keys()
         
         # Sort on type, them on time. Necessary because keys() has no requirement to return
         # things in any order.
-
-        if PYTHON3:
-            self.eventList.sort(key=lambda x: (x.type))
-            self.eventList.sort(key=lambda x: (x.time)) #A bit of a hack.
-        else:
-            self.eventList.sort(lambda x, y: cmp(x.type ,  y.type))
-            self.eventList.sort(lambda x, y: int( 1000 * (x.time - y.time))) #A bit of a hack.
-
+        
+        self.eventList.sort(lambda x, y: cmp(x.type ,  y.type))
+        self.eventList.sort(lambda x, y: int( 1000 * (x.time - y.time))) #A bit of a hack.
 
     def closeTrack(self):
         '''Called to close a track before writing
@@ -533,10 +500,7 @@ class MIDITrack:
                 dataLenghtVar = writeVarLength(dataLength)
                 for i in range(0,len(dataLenghtVar)):
                     self.MIDIdata = self.MIDIdata + struct.pack("b",dataLenghtVar[i])
-                if PYTHON3:
-                    self.MIDIdata = self.MIDIdata + event.trackName.encode()
-                else:
-                    self.MIDIdata = self.MIDIdata + event.trackName
+                self.MIDIdata = self.MIDIdata + event.trackName
             elif event.type == "ControllerEvent":
                 code = 0xB << 4 | event.channel
                 varTime = writeVarLength(event.time)
@@ -597,7 +561,7 @@ class MIDITrack:
         for event in self.MIDIEventList:
             
             if event.type == 'NoteOn':
-                if str(event.pitch)+str(event.channel) in stack:
+                if stack.has_key(str(event.pitch)+str(event.channel)):
                     stack[str(event.pitch)+str(event.channel)].append(event.time)
                 else:
                     stack[str(event.pitch)+str(event.channel)] = [event.time]
@@ -619,14 +583,9 @@ class MIDITrack:
         # This may have to be revisited, as it makes assumptions about how 
         # the internal sort works, and is in essence creating a sort on a primary 
         # and secondary key.
-
-        if PYTHON3:
-            self.MIDIEventList.sort(key=lambda x: (x.type))
-            self.MIDIEventList.sort(key=lambda x: (x.time))
-        else:
-            self.MIDIEventList.sort(lambda x, y: cmp(x.type ,  y.type))
-            self.MIDIEventList.sort(lambda x, y: int( 1000 * (x.time - y.time)))
-
+        
+        self.MIDIEventList.sort(lambda x, y: cmp(x.type ,  y.type))
+        self.MIDIEventList.sort(lambda x, y: int( 1000 * (x.time - y.time)))
 
     def adjustTime(self,origin):
         '''
