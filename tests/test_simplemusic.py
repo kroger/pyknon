@@ -1,6 +1,6 @@
 from __future__ import division
 import unittest
-import simplemusic as music
+import pyknon.simplemusic as music
 
 
 class TestNote(unittest.TestCase):

@@ -19,7 +19,7 @@ import sys,  struct
 sys.path.append('..')
 
 import unittest
-from MidiFile import MIDIFile, MIDIHeader, MIDITrack, writeVarLength,  \
+from pyknon.MidiFile import MIDIFile, MIDIHeader, MIDITrack, writeVarLength,  \
     frequencyTransform,  returnFrequency
 import sys
 

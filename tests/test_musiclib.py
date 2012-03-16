@@ -1,5 +1,5 @@
 import unittest
-from musiclib import MusiclibError, Note, NoteSeq, Rest
+from pyknon.musiclib import MusiclibError, Note, NoteSeq, Rest
 
 
 def seq_from_numbers(*args):
