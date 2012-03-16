@@ -1,8 +1,13 @@
 from __future__ import division
+from itertools import combinations
 import pc_sets
 
 
 PC_SETS = pc_sets.pc_sets
+
+
+def flatten(alist):
+    return [item for sublist in alist for item in sublist]
 
 
 def mod12(n):
@@ -12,6 +17,7 @@ def mod12(n):
 def interval(x, y):
     return mod12(y - x)
 
+
 def interval_class(x, y):
     return min(interval(x, y), interval(y, x))
 
@@ -20,11 +26,24 @@ def intervals(notes):
     return [interval_class(y, x) for x,y in zip(notes, rotate(notes)[:-1])]
 
 
+def all_intervals(notes):
+    return sorted(flatten([intervals(n) for n in combinations(sorted(notes), 2)]))
+
+
+def set_sizes(pset):
+    return [interval(x, y) for x,y in zip(rotate(pset, len(pset) - 1), pset)]
+
+
+def set_size(pset):
+    return mod12(pset[-1] - pset[0])
+
+
 def transposition(notes, index):
     return [mod12(n + index) for n in notes]
 
 
 def inversion(notes, index=0):
+    # FIXME: check Jama's reisa and document
     return [mod12(index - n) for n in notes]
 
 
@@ -33,9 +52,12 @@ def transposition_startswith(notes, start):
 
 
 def inversion_startswith(notes, start):
-    transp0 = transposition_startswith(notes, 0)
-    inv0 = inversion(transp0, 0)
-    return transposition_startswith(inv0, start)
+    transp = transposition_startswith(notes, 0)
+    return transposition_startswith(inversion(transp), start)
+
+
+def inversion_first_note(notes):
+    return inversion(notes, 2 * notes[0])
 
 
 def rotate(item, n=1):
@@ -50,6 +72,87 @@ def rotate_set(pset):
 
 def retrograde(notes):
     return list(reversed(notes))
+
+
+
+def interval_vector(notes):
+    vector = [0, 0, 0, 0, 0, 0]
+
+    for i in all_intervals(notes):
+        vector[i-1] += 1
+
+    return vector
+
+
+def order_set(notes):
+    # it doesn't eliminate repetition
+    return sorted([mod12(n) for n in notes])
+
+
+def interval_tie(pset):
+    # return interval of between second-to-last and first, according to Straus.
+    return interval(pset[-2], pset[0])
+
+
+def normal_form(notes):
+    oset = order_set(notes)
+    rotations = rotate_set(oset)
+    min_size = min(set_sizes(oset))
+    smallest_sets = [x for x in rotations if set_size(x) == min_size]
+
+    if len(smallest_sets) == 1:
+        return smallest_sets[0]
+    else:
+        min_pack_size = min([interval_tie(x) for x in smallest_sets])
+        packed_sets = [x for x in smallest_sets if interval_tie(x) == min_pack_size]
+
+        return packed_sets[0]
+
+
+def prime_form(notes):
+    set_zero = transposition_startswith(normal_form(notes), 0)
+    set_inv = transposition_startswith(normal_form(inversion(set_zero)), 0)
+    if interval_tie(set_zero) <= interval_tie(set_inv):
+        return set_zero
+    else:
+        return set_inv
+
+
+def matrix(row):
+    return [transposition_startswith(row, n) for n in inversion_first_note(row)]
+
+
+def row_matrix_search(matrix, notes):
+    # return positions
+    return [[row.index(note) for note in notes] for row in matrix]
+
+
+def column_matrix_search(matrix, notes):
+    return [[row.index(note) for note in notes] for row in zip(*matrix)]
+
+
+def note_to_lily(note, octave=''):
+    ## note as integer
+    names = "c cis d dis e f fis g gis a ais b".split()
+    return names[note % 12] + octave + "!"
+
+
+def notes_to_lily(notes):
+    note_list = []
+    prev_note = notes[0]
+    for note in notes:
+        if interval(note, prev_note) > 6:
+            octave = "'"
+        else:
+            octave = ""
+        note_list.append(note_to_lily(note, octave))
+        prev_note = note
+    return " ".join(note_list)
+
+
+def notes_as_lily_chord(notes):
+    ## an interable as a lily chord
+    return "<{0}>".format(notes_to_lily(notes))
 
 
 def note_name(number):
