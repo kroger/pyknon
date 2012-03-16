@@ -1,0 +1,4 @@
+pytest
+sphinx
+pytest-pep8
+pytest-cov
