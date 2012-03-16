@@ -1,2 +1,6 @@
 * install python3
+* check inversion (x - i) and (2x - i)
+* explain inversion in a better way
+* write code for tonal interval
+* talk about tonal encoding
 
