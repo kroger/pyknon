@@ -9,5 +9,5 @@ coverage:
 doc:
 	cd doc && make html
 
-view:
+view: doc
 	open doc/_build/html/index.html
