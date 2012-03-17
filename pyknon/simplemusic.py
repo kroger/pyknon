@@ -15,7 +15,7 @@ def mod12(n):
 
 
 def interval(x, y):
-    return mod12(y - x)
+    return mod12(x - y)
 
 
 def interval_class(x, y):

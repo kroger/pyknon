@@ -11,11 +11,11 @@ class TestNote(unittest.TestCase):
         self.assertEqual(music.mod12(14), 2)
 
     def test_interval(self):
-        self.assertEqual(music.interval(3, 4), 1)
-        self.assertEqual(music.interval(4, 3), 11)
+        self.assertEqual(music.interval(3, 4), 11)
+        self.assertEqual(music.interval(4, 3), 1)
         self.assertEqual(music.interval(0, 12), 0)
-        self.assertEqual(music.interval(1, 10), 9)
-        self.assertEqual(music.interval(10, 1), 3)
+        self.assertEqual(music.interval(1, 10), 3)
+        self.assertEqual(music.interval(10, 1), 9)
 
     def test_transposition(self):
         n1 = [3, 7, 11, 10]
