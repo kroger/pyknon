@@ -135,47 +135,11 @@ class MusicTest(unittest.TestCase):
             [11, 0, 2, 8, 1, 10, 3, 9, 6, 7, 4, 5],
             [10, 11, 1, 7, 0, 9, 2, 8, 5, 6, 3, 4]]
 
-    def test_mod12(self):
-        self.assertEqual(music.mod12(13), 1)
-        self.assertEqual(music.mod12(1), 1)
-        self.assertEqual(music.mod12(-1), 11)
-        self.assertEqual(music.mod12(0), 0)
-        self.assertEqual(music.mod12(12), 0)
-
-    def test_interval(self):
-        self.assertEqual(music.interval(4, 1), 3)
-        self.assertEqual(music.interval(1, 4), 9)
-        self.assertEqual(music.interval(0, 3), 9)
-        self.assertEqual(music.interval(3, 0), 3)
-
     def test_set_sizes(self):
         self.assertEqual(music.set_sizes([0, 4, 8, 9, 11]), [11, 8, 8, 11, 10])
 
-    def test_transposition(self):
-        self.assertEqual(music.transposition([1,2,3], 2), [3,4,5])
-        self.assertEqual(music.transposition([10,11,0], 3), [1,2,3])
-
-    def test_transposition_startswith(self):
-        self.assertEqual(music.transposition_startswith([3, 5, 6], 7), [7, 9, 10])
-        self.assertEqual(music.transposition_startswith([11, 2, 10], 0), [0, 3, 11])
-
-    def test_inversion(self):
-        self.assertEqual(music.inversion([0, 4, 7], 0), [0, 8, 5])
-        # FIXME: check reisa
-        self.assertEqual(music.inversion([3, 4, 7], 6), [3, 2, 11])
-
     def test_inversion_first_note(self):
         self.assertEqual(music.inversion_first_note([3, 7, 9]), [3, 11, 9])
-
-    def test_inversion_startswith(self):
-        self.assertEqual(music.inversion_startswith([3, 4, 7], 6), [6, 5, 2])
-
-    def test_rotate(self):
-        self.assertEqual(music.rotate([1,2,3]), [2,3,1])
-        self.assertEqual(music.rotate([1,2,3], 1), [2,3,1])
-        self.assertEqual(music.rotate([1,2,3], 2), [3,1,2])
-        self.assertEqual(music.rotate([1,2,3], 3), [1,2,3])
-        self.assertEqual(music.rotate([1,2,3], 4), [2,3,1])
 
     def test_set_size(self):
         self.assertEqual(music.set_size([0, 3, 11]), 11)
