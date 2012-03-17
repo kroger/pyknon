@@ -1,6 +1,6 @@
 from __future__ import division
 from itertools import combinations
-import pc_sets
+from pyknon import pc_sets
 
 
 PC_SETS = pc_sets.pc_sets
@@ -209,5 +209,3 @@ def diatonic_interval(note_string1, note_string2):
     simple_interval = interval(n1, n2)
     interval_name = interval_names[simple_interval]
     interval_class = interval(pitch1, pitch2)
-
-    print interval_name, interval_class, simple_interval
