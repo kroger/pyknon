@@ -17,14 +17,22 @@
 
 import sys,  struct
 sys.path.append('..')
+PYTHON3 = True if sys.version_info[0] == 3 else False
 
 import unittest
+
 from pyknon.MidiFile import MIDIFile, MIDIHeader, MIDITrack, writeVarLength,  \
     frequencyTransform,  returnFrequency
 import sys
 
+def get_byte(midi, track, data):
+    if PYTHON3:
+        return struct.unpack('>B', bytes([midi.tracks[track].MIDIdata[data]]))[0]
+    else:
+        return struct.unpack('>B', midi.tracks[track].MIDIdata[data])[0]
+
+
 class TestMIDIUtils(unittest.TestCase):
-    
     def testWriteVarLength(self):
         self.assertEquals(writeVarLength(0x70), [0x70])
         self.assertEquals(writeVarLength(0x80), [0x81, 0x00])
@@ -182,51 +190,51 @@ class TestMIDIUtils(unittest.TestCase):
         MyMIDI.addSysEx(0,0, 0, struct.pack('>B', 0x01))
         MyMIDI.close()
         self.assertEquals(MyMIDI.tracks[0].MIDIEventList[0].type, 'SysEx')
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[0])[0], 0x00)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[1])[0], 0xf0)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[2])[0], 3)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[3])[0], 0x00)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[4])[0], 0x01)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[5])[0], 0xf7)
+        self.assertEquals(get_byte(MyMIDI, 0, 0), 0x00)
+        self.assertEquals(get_byte(MyMIDI, 0, 1), 0xf0)
+        self.assertEquals(get_byte(MyMIDI, 0, 2), 3)
+        self.assertEquals(get_byte(MyMIDI, 0, 3), 0x00)
+        self.assertEquals(get_byte(MyMIDI, 0, 4), 0x01)
+        self.assertEquals(get_byte(MyMIDI, 0, 5), 0xf7)
         
     def testUniversalSysEx(self):
         MyMIDI = MIDIFile(1)
         MyMIDI.addUniversalSysEx(0,0, 1, 2, struct.pack('>B', 0x01))
         MyMIDI.close()
         self.assertEquals(MyMIDI.tracks[0].MIDIEventList[0].type, 'UniversalSysEx')
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[0])[0], 0x00)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[1])[0], 0xf0)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[2])[0], 6)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[3])[0], 0x7E)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[4])[0], 0x7F)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[5])[0], 0x01)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[6])[0], 0x02)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[7])[0], 0x01)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[8])[0], 0xf7)
+        self.assertEquals(get_byte(MyMIDI, 0, 0), 0x00)
+        self.assertEquals(get_byte(MyMIDI, 0, 1), 0xf0)
+        self.assertEquals(get_byte(MyMIDI, 0, 2), 6)
+        self.assertEquals(get_byte(MyMIDI, 0, 3), 0x7E)
+        self.assertEquals(get_byte(MyMIDI, 0, 4), 0x7F)
+        self.assertEquals(get_byte(MyMIDI, 0, 5), 0x01)
+        self.assertEquals(get_byte(MyMIDI, 0, 6), 0x02)
+        self.assertEquals(get_byte(MyMIDI, 0, 7), 0x01)
+        self.assertEquals(get_byte(MyMIDI, 0, 8), 0xf7)
         
     def testTuning(self):
         MyMIDI = MIDIFile(1)
         MyMIDI.changeNoteTuning(0, [(1, 440), (2, 880)])
         MyMIDI.close()
         self.assertEquals(MyMIDI.tracks[0].MIDIEventList[0].type, 'UniversalSysEx')
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[0])[0], 0x00)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[1])[0], 0xf0)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[2])[0], 15)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[3])[0], 0x7E)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[4])[0], 0x7F)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[5])[0], 0x08)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[6])[0], 0x02)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[7])[0], 0x00)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[8])[0], 0x2)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[9])[0], 0x1)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[10])[0], 69)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[11])[0], 0)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[12])[0], 0)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[13])[0], 0x2)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[14])[0], 81)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[15])[0], 0)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[16])[0], 0)
-        self.assertEquals(struct.unpack('>B', MyMIDI.tracks[0].MIDIdata[17])[0], 0xf7)
+        self.assertEquals(get_byte(MyMIDI, 0, 0), 0x00)
+        self.assertEquals(get_byte(MyMIDI, 0, 1), 0xf0)
+        self.assertEquals(get_byte(MyMIDI, 0, 2), 15)
+        self.assertEquals(get_byte(MyMIDI, 0, 3), 0x7E)
+        self.assertEquals(get_byte(MyMIDI, 0, 4), 0x7F)
+        self.assertEquals(get_byte(MyMIDI, 0, 5), 0x08)
+        self.assertEquals(get_byte(MyMIDI, 0, 6), 0x02)
+        self.assertEquals(get_byte(MyMIDI, 0, 7), 0x00)
+        self.assertEquals(get_byte(MyMIDI, 0, 8), 0x2)
+        self.assertEquals(get_byte(MyMIDI, 0, 9), 0x1)
+        self.assertEquals(get_byte(MyMIDI, 0, 10), 69)
+        self.assertEquals(get_byte(MyMIDI, 0, 11), 0)
+        self.assertEquals(get_byte(MyMIDI, 0, 12), 0)
+        self.assertEquals(get_byte(MyMIDI, 0, 13), 0x2)
+        self.assertEquals(get_byte(MyMIDI, 0, 14), 81)
+        self.assertEquals(get_byte(MyMIDI, 0, 15), 0)
+        self.assertEquals(get_byte(MyMIDI, 0, 16), 0)
+        self.assertEquals(get_byte(MyMIDI, 0, 17), 0xf7)
     
 MIDISuite = unittest.TestLoader().loadTestsFromTestCase(TestMIDIUtils)
     
