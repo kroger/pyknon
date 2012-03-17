@@ -14,7 +14,7 @@ import struct
 import sys
 import math
 
-PYTHON3 = True if sys.version_info.major == 3 else False
+PYTHON3 = True if sys.version_info[0] == 3 else False
 
 
 # TICKSPERBEAT is the number of "ticks" (time measurement in the MIDI file) that
