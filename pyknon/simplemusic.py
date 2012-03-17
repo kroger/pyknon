@@ -1,6 +1,6 @@
 from __future__ import division
 from itertools import combinations
-import pc_sets
+from pyknon import pc_sets
 
 
 PC_SETS = pc_sets.pc_sets

@@ -1,7 +1,7 @@
 # Makefile for Sphinx documentation
 #
 
-export PYTHONPATH=../pyknon/:$PYTHONPATH
+export PYTHONPATH=../pyknon/:../:$PYTHONPATH
 
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
