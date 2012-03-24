@@ -1,24 +1,27 @@
-* Introduction
+Introduction
+============
 
 Pyknon is a simple music library for Python hackers. With Pyknon you
 can generate Midi files quickly and reason about musical proprierties
 
-* Usage
+Usage
+=====
 
 Pyknon is very simple to use, here's a basic example to create 4 notes
-and save into a MIDI file:
+and save into a MIDI file::
 
-  from pyknon.genmidi import Midi
-  from pyknon.musiclib import NoteSeq
+    from pyknon.genmidi import Midi
+    from pyknon.musiclib import NoteSeq
 
-  notes1 = NoteSeq("D4 F#8 A Bb4")
-  midi = Midi(1, tempo=90)
-  midi.seq_notes(notes1, track=0)
-  midi.write_file("demo.mid")
+    notes1 = NoteSeq("D4 F#8 A Bb4")
+    midi = Midi(1, tempo=90)
+    midi.seq_notes(notes1, track=0)
+    midi.write_file("demo.mid")
 
 See the documentation for more details.
 
-* License
+License
+=======
 
 This library is released under a MIT license. See the LICENSE file for
 more details.
