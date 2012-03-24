@@ -20,7 +20,7 @@ See the documentation for more details.
 
 * License
 
-This library is released under a MIT license. You can do anything with
-it as long you give me credit. See the LICENSE file for more details.
+This library is released under a MIT license. See the LICENSE file for
+more details.
 
 Pyknon's MIDI module is heavily based on Mark Conway Wirt's MIDIUtil.
