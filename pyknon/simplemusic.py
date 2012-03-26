@@ -174,9 +174,6 @@ def accidentals(note_string):
         return 0
 
 
-# Return a tuple in the format (note_integer, accidental):
-# >>>note_accidental("Eb")
-# >>>(4, -1)
 def note_accidental(note_string):
     notes = "C . D . E F . G . A . B".split()
     name = note_string[0:1].upper()
@@ -184,7 +181,7 @@ def note_accidental(note_string):
     acc = accidentals(note_string)
     return number, acc
 
-    
+
 def name_to_number(note_string):
     number, acc = note_accidental(note_string)
     return mod12(number + acc)
