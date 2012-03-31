@@ -23,23 +23,16 @@ class Midi(object):
             instr = instrument[track] if isinstance(instrument, list) else instrument
             self.midi_data.addProgramChange(track, 0, 0, instr)
 
-    def seq_notes(self, notes, track=0, time=0):
-        """notes is iterable where every item is (pitch, octave, dur,
-        volume) or a NoteSeq instance
-        """
-
-        if isinstance(notes, musiclib.NoteSeq):
-            note_list = notes.note_list()
-        else:
-            note_list = notes
-            
-        for note, octave, dur, volume in note_list:
+    def seq_notes(self, noteseq, track=0, time=0):
+        for note, octave, dur, volume in noteseq.note_list():
+            # The MIDI library uses 1 for quarter note but we use 0.25
+            midi_dur = dur * 4
             if note == -1:
                 # just skip the rest, the next note will start on the right time
                 pass
             else:
-                self.midi_data.addNote(track, 0, note + (12 * octave), time, dur, volume)
-            time += dur
+                self.midi_data.addNote(track, 0, note + (12 * octave), time, midi_dur, volume)
+            time += midi_dur
 
     def write_file(self, filename):
         if isinstance(filename, str):
