@@ -11,6 +11,23 @@ Implementation
    import pyknon
 
 
+Duration
+--------
+
+Calculate the total duration of a note with augmentation dots.
+
+:param dur: reciprocal of usual note values (e.g. 8th note has the value of 8)
+:param dots: number of duration dots
+
+The total duration of a note is :math:`\\sum_{i=0} \\frac{R}{2^i}`
+where R is the reciprocal of ``dur``. For instance, a
+note with a duration like '16..' will have a total duration of
+1/16 + 1/32 + 1/64 = 7/64.
+
+>>> calculate_duration(16, 2)
+    Fraction(7, 64)
+    
+
 Integer notation
 ----------------
 

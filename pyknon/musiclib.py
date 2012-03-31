@@ -1,78 +1,8 @@
-import re
 import collections
 import copy
+import notation
 
 
-REGEX_NOTE = re.compile("([a-gA-GRr])([b#]*)([0-9]*)([.]*)([',]*)")
-
-
-### Parse a simple symbolic representation
-###
-
-
-def parse_accidental(acc):
-    n = len(acc) if acc else 0
-    return -n if "b" in acc else n
-
-
-def parse_octave(string):
-    """5 is central octave. Return 5 as a fall-back"""
-
-    if string:
-        size = string.count(string[0])
-        return size + 4 if string[0] == "'" else -size + 5
-    else:
-        return 5
-
-
-def parse_dur(dur, dots):
-    value = 1.0 / int(dur) * 4
-    return value + (value/2.0) if dots else value
-
-
-def parse_note(note, volume=120, prev_octave=5, prev_dur=1):
-    note_names = "c # d # e f # g # a # b".split()
-    m = REGEX_NOTE.match(note)
-    pitch, acc, dur, dots, octv = m.groups()
-
-    octave = parse_octave(octv) if octv else prev_octave
-    duration = parse_dur(dur, dots) if dur else prev_dur
-
-    if pitch in ["r", "R"]:
-        return Rest(duration)
-    else:
-        note_number = note_names.index(pitch.lower()) + parse_accidental(acc)
-        return note_number, octave, duration, volume
-
-    
-def parse_notes(notes, volume=120):
-    prev_octave = 5 # default octave
-    prev_dur = 1    # default duration is 1/4, or 1 in the MIDI library
-
-    result = []
-    for item in notes:
-        args = parse_note(item, volume, prev_octave, prev_dur)
-        if isinstance(args, Rest):
-            result.append(args)
-            dur = args.dur
-        else:
-            number, octave, dur, vol = args
-            result.append(Note(number, octave, dur, vol))
-            prev_octave = octave
-            
-        prev_dur = dur
-
-    return result
-
-
-def parse_score(filename):
-    with open(filename) as score:
-        notes = []
-        for line in score:
-            notes.extend([note for note in line.split()])
-        return parse_notes(notes)
-
-    
 class MusiclibError(Exception):
     pass
 
@@ -98,7 +28,7 @@ class Rest(object):
 class Note(object):
     def __init__(self, value=0, octave=5, dur=1, volume=100):
         if isinstance(value, str):
-            self.value, self.octave, self.dur, self.volume = parse_note(value)
+            self.value, self.octave, self.dur, self.volume = notation.parse_note(value)
         else:
             offset, val = divmod(value, 12)
             self.value = val
@@ -151,7 +81,7 @@ class NoteSeq(collections.MutableSequence):
         
     def __init__(self, args=[]):
         if isinstance(args, str):
-            self.items = parse_notes(args.split())
+            self.items = notation.parse_notes(args.split())
         elif isinstance(args, collections.Iterable):
             if self._is_note_or_rest(args):
                 self.items = args
