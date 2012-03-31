@@ -29,11 +29,11 @@ class TestRest(unittest.TestCase):
 class TestNote(unittest.TestCase):
     def test_init(self):
         n1 = Note("C")
-        n2 = Note(value=6, octave=6, dur=0.5, volume=120)
+        n2 = Note(value=6, octave=6, dur=0.125, volume=120)
         n3 = Note()
         n4 = Note(2)
         self.assertEqual(n1, Note(0))
-        self.assertEqual(n2, Note(6, 6, 0.5, 120))
+        self.assertEqual(n2, Note(6, 6, 0.125, 120))
         self.assertEqual(n2, Note("F#8''", volume=120))
         self.assertEqual(n3, n1)
         self.assertEqual(n4, Note("D"))
@@ -127,23 +127,22 @@ class TestNoteSeqOperations(unittest.TestCase):
 
 
 
-
 class TestNoteSeq(unittest.TestCase):
     def test_init(self):
         notes = [Note(0, 5), Note(2, 5)]
         seq1 = NoteSeq(notes)
         seq2 = NoteSeq("C#2' D#4''")
-        seq3 = NoteSeq([Note(1, 5, 2), Note(3, 6, 1)])
+        seq3 = NoteSeq([Note(1, 5, 0.5), Note(3, 6, 0.25)])
         self.assertEqual(seq1, NoteSeq(notes))
         self.assertEqual(seq2, seq3)
         self.assertNotEqual(seq1, NoteSeq(notes + [Note(3, 5)]))
-        self.assertRaises(MusiclibError, NoteSeq, [Note(1, 5, 2), Rest(2), 1])
+        self.assertRaises(MusiclibError, NoteSeq, [Note(1, 5, 0.5), Rest(2), 1])
         self.assertRaises(MusiclibError, NoteSeq, 1)
 
     def test_init_string(self):
-        seq1 = NoteSeq([Note(0, 4, 0.5), Note(2, 4, 0.5)])
-        seq2 = NoteSeq([Note(0, 6, 0.5), Rest(1)])
-        seq3 = NoteSeq([Note(0, 5, 1), Note(2, 5, 1)])
+        seq1 = NoteSeq([Note(0, 4, 0.125), Note(2, 4, 0.125)])
+        seq2 = NoteSeq([Note(0, 6, 0.125), Rest(0.25)])
+        seq3 = NoteSeq([Note(0, 5, 0.25), Note(2, 5, 0.25)])
         self.assertEqual(NoteSeq("C8, D"), seq1)
         self.assertEqual(NoteSeq("c8, d"), seq1)
         self.assertEqual(NoteSeq("c8'' r4"), seq2)
@@ -153,18 +152,17 @@ class TestNoteSeq(unittest.TestCase):
     def test_init_with_rest(self):
         seq1 = NoteSeq("C4 R4 D4")
         seq2 = NoteSeq("C8 R D")
-        seq3 = NoteSeq([Note(0, dur=1), Rest(1), Note(2, dur=1)])
-        self.assertEqual(seq1[0].dur, 1)
-        self.assertEqual(seq1[1].dur, 1)
-        self.assertEqual(seq1[2].dur, 1)
-        self.assertEqual(seq2[0].dur, 0.5)
-        self.assertEqual(seq2[1].dur, 0.5)
-        self.assertEqual(seq2[2].dur, 0.5)
-        self.assertEqual(seq3[0].dur, 1)
-        self.assertEqual(seq3[1].dur, 1)
-        self.assertEqual(seq3[2].dur, 1)
+        seq3 = NoteSeq([Note(0, dur=0.25), Rest(0.25), Note(2, dur=0.25)])
+        self.assertEqual(seq1[0].dur, 0.25)
+        self.assertEqual(seq1[1].dur, 0.25)
+        self.assertEqual(seq1[2].dur, 0.25)
+        self.assertEqual(seq2[0].dur, 0.125)
+        self.assertEqual(seq2[1].dur, 0.125)
+        self.assertEqual(seq2[2].dur, 0.125)
+        self.assertEqual(seq3[0].dur, 0.25)
+        self.assertEqual(seq3[1].dur, 0.25)
+        self.assertEqual(seq3[2].dur, 0.25)
         
-
     def test_transposition(self):
         seq = seq_from_numbers(0, 4, 7)
         self.assertEqual(seq.transposition(3), seq_from_numbers(3, 7, 10))
