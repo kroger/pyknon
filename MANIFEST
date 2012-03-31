@@ -5,6 +5,7 @@ pyknon/MidiFile.py
 pyknon/__init__.py
 pyknon/genmidi.py
 pyknon/musiclib.py
+pyknon/notation.py
 pyknon/pc_sets.py
 pyknon/simplemusic.py
 pyknon/utils.py

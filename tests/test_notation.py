@@ -52,7 +52,3 @@ class TestNotation(unittest.TestCase):
         list_notes2 = [(11, 5, 0.25, 120), (3, 4, 0.125, 120), (5, 4, 0.0625, 120)]
         self.assertEqual(notes1, list_notes1)
         self.assertEqual(notes2, list_notes2)
-
-    def test_parse_score(self):
-        pass
-    
