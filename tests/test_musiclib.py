@@ -2,16 +2,6 @@ import unittest
 from pyknon.musiclib import MusiclibError, Note, NoteSeq, Rest
 
 
-def seq_from_numbers(*args):
-    return NoteSeq([Note(value=x) if x >= 0 else Rest() for x in args])
-
-
-def seq_from_alist(*args):
-    """((val, dur))
-    """
-    return NoteSeq([Note(val, dur) for val, dur in args])
-
-
 class TestRest(unittest.TestCase):
     def test_stretch_dur(self):
         n1 = Rest(dur=0.25)
@@ -164,17 +154,16 @@ class TestNoteSeq(unittest.TestCase):
         self.assertEqual(seq3[2].dur, 0.25)
         
     def test_transposition(self):
-        seq = seq_from_numbers(0, 4, 7)
-        self.assertEqual(seq.transposition(3), seq_from_numbers(3, 7, 10))
-        self.assertEqual(seq.transposition(5), seq_from_numbers(5, 9, 12))
+        seq = NoteSeq("C E G")
+        self.assertEqual(seq.transposition(3), NoteSeq("Eb G Bb"))
+        self.assertEqual(seq.transposition(5), NoteSeq("F A C''"))
 
     def test_transposition_with_rest(self):
-        seq1 = seq_from_numbers(0, -1, 4, 7)
-        seq2 = seq_from_numbers(3, -1, 7, 10)
-        self.assertEqual(seq1.transposition(3), seq2)
+        seq1 = NoteSeq("C8 D R E")
+        self.assertEqual(seq1.transposition(3), NoteSeq("Eb8 F R G"))
 
     def test_transposition_startswith(self):
-        seq1 = seq_from_numbers(4, 7, 1)
+        seq1 = NoteSeq("E G C#")
         seq2 = NoteSeq([Note(2, 5), Note(5, 5), Note(11, 4)])
         seq3 = NoteSeq([Note(2, 4), Note(5, 4), Note(11, 3)])
         self.assertEqual(seq1.transposition_startswith(Note(2, 5)), seq2)
@@ -186,27 +175,27 @@ class TestNoteSeq(unittest.TestCase):
         self.assertEqual(seq1.transposition_startswith(2), seq2)
 
     def test_transposition_startswith_rest(self):
-        seq1 = seq_from_numbers(4, 7, -1, 1)
+        seq1 = NoteSeq("E G R C#")
         seq2 = NoteSeq([Note(2, 5), Note(5, 5), Rest(), Note(11, 4)])
         self.assertEqual(seq1.transposition_startswith(Note(2, 5)), seq2)
 
     def test_inversion(self):
-        seq1 = seq_from_numbers(0, 4, 7)
+        seq1 = NoteSeq("C E G")
         seq2 = NoteSeq([Note(0, 5), Note(8, 4), Note(5, 4)])
         self.assertEqual(seq1.inversion(0), seq2)
 
     def test_inversion_octave(self):
-        seq1 = seq_from_alist((7, 5), (8, 5), (11, 4))
-        seq2 = seq_from_alist((7, 5), (6, 5), (3, 6))
+        seq1 = NoteSeq("G Ab B,")
+        seq2 = NoteSeq("G F# Eb''")
         self.assertEqual(seq1.inversion(7), seq2)
 
     def test_inversion_rest(self):
-        seq1 = seq_from_numbers(0, 4, -1, 7)
+        seq1 = NoteSeq("C E R G")
         seq2 = NoteSeq([Note(0, 5), Note(8, 4), Rest(), Note(5, 4)])
         self.assertEqual(seq1.inversion(0), seq2)
 
     def test_inversion_startswith(self):
-        seq1 = seq_from_numbers(0, 4, 7)
+        seq1 = NoteSeq("C E G")
         seq2 = NoteSeq([Note(1, 5), Note(9, 4), Note(6, 4)])
         self.assertEqual(seq1.inversion_startswith(Note(1, 5)), seq2)
 
@@ -217,14 +206,14 @@ class TestNoteSeq(unittest.TestCase):
 
 
     def test_inversion_startswith_octave(self):
-        seq1 = seq_from_alist((7, 5), (8, 5), (11, 4))
-        seq2 = seq_from_alist((4, 5), (3, 5), (0, 6))
+        seq1 = NoteSeq("G Ab B,")
+        seq2 = NoteSeq("E Eb C''")
         self.assertEqual(seq1.inversion_startswith(Note(4, 5)), seq2)
 
     def test_rotate(self):
-        seq1 = seq_from_numbers(0, 4, 7)
-        seq2 = seq_from_numbers(4, 7, 0)
-        seq3 = seq_from_numbers(7, 0, 4)
+        seq1 = NoteSeq("C E G")
+        seq2 = NoteSeq("E G C")
+        seq3 = NoteSeq("G C E")
         self.assertEqual(seq1.rotate(0), seq1)
         self.assertEqual(seq1.rotate(1), seq2)
         self.assertEqual(seq1.rotate(2), seq3)
