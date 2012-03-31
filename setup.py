@@ -5,5 +5,5 @@ setup(
     version='0.1',
     packages=['pyknon',],
     license='MIT',
-    long_description=open('README').read(),
+    long_description=open('README.rst').read(),
 )
