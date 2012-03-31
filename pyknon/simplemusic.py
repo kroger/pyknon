@@ -32,6 +32,7 @@ def set_sizes(pset):
 
 
 def set_size(pset):
+    ## pset must be sorted
     return mod12(pset[-1] - pset[0])
 
 
@@ -69,7 +70,6 @@ def rotate_set(pset):
 
 def retrograde(notes):
     return list(reversed(notes))
-
 
 
 def interval_vector(notes):
@@ -128,30 +128,6 @@ def column_matrix_search(matrix, notes):
     return [[row.index(note) for note in notes] for row in zip(*matrix)]
 
 
-def note_to_lily(note, octave=''):
-    ## note as integer
-    names = "c cis d dis e f fis g gis a ais b".split()
-    return names[note % 12] + octave + "!"
-
-
-def notes_to_lily(notes):
-    note_list = []
-    prev_note = notes[0]
-    for note in notes:
-        if interval(note, prev_note) > 6:
-            octave = "'"
-        else:
-            octave = ""
-        note_list.append(note_to_lily(note, octave))
-        prev_note = note
-    return " ".join(note_list)
-
-
-def notes_as_lily_chord(notes):
-    ## an interable as a lily chord
-    return "<{0}>".format(notes_to_lily(notes))
-
-
 def note_name(number):
     notes = "C C# D D# E F F# G G# A A# B".split()
     return notes[mod12(number)]
@@ -193,13 +169,4 @@ def durations(notes_values, unity, tempo):
 
 
 def diatonic_interval(note_string1, note_string2):
-    interval_names = "Unison Second Second Third Third Fourth . Fifth Sixth Sixth Seventh Seventh".split()
-
-    n1, acc1 = note_accidental(note_string1)
-    n2, acc2 = note_accidental(note_string2)
-    pitch1 = name_to_number(note_string1)
-    pitch2 = name_to_number(note_string2)
-
-    simple_interval = interval(n1, n2)
-    interval_name = interval_names[simple_interval]
-    interval_class = interval(pitch1, pitch2)
+    pass
