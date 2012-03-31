@@ -85,10 +85,22 @@ class NoteSeq(collections.MutableSequence):
             return Note(*note_list)
         else:
             return Rest(note_list[2])
-        
+
+    @staticmethod
+    def _parse_score(filename):
+        with open(filename) as score:
+            notes = []
+            for line in score:
+                notes.extend([note for note in line.split()])
+            return notes
+
     def __init__(self, args=[]):
         if isinstance(args, str):
-            note_lists = notation.parse_notes(args.split())
+            if args.startswith("file://"):
+                filename = args.replace("file://", "")
+                note_lists = notation.parse_notes(self._parse_score(filename))
+            else:
+                note_lists = notation.parse_notes(args.split())
             self.items = [self._make_note_or_rest(x) for x in note_lists]
         elif isinstance(args, collections.Iterable):
             if self._is_note_or_rest(args):

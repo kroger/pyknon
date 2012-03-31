@@ -64,11 +64,3 @@ def parse_notes(notes, volume=120):
         prev_oct = octave
         prev_dur = dur
     return result
-
-
-def parse_score(filename):
-    with open(filename) as score:
-        notes = []
-        for line in score:
-            notes.extend([note for note in line.split()])
-        return parse_notes(notes)
