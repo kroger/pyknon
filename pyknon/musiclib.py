@@ -1,6 +1,6 @@
 import collections
 import copy
-import notation
+from pyknon import notation
 
 
 class MusiclibError(Exception):
