@@ -109,12 +109,11 @@ class NoteSeq(collections.MutableSequence):
                 raise MusiclibError("Every argument have to be a Note or a Rest.")
         else:
             raise MusiclibError("NoteSeq doesn't accept this type of data.")
-            
 
     def __iter__(self):
         for x in self.items:
             yield x
-    
+
     def __delitem__(self, i):
         del self.items[i]
 
@@ -184,7 +183,7 @@ class NoteSeq(collections.MutableSequence):
     def intervals(self):
         v1 = [x.value for x in self]
         v2 = [x.value for x in self.rotate()]
-        
+
         return [y - x for x, y in zip(v1, v2[:-1])]
 
     def stretch_inverval(self, factor):

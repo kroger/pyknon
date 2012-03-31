@@ -8,4 +8,3 @@ pyknon/musiclib.py
 pyknon/notation.py
 pyknon/pc_sets.py
 pyknon/simplemusic.py
-pyknon/utils.py
