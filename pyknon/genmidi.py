@@ -23,11 +23,6 @@ class Midi(object):
             instr = instrument[track] if isinstance(instrument, list) else instrument
             self.midi_data.addProgramChange(track, 0, 0, instr)
 
-    def seq_notes_same_dur(self, notes, track=0, time=0, dur=0.25):
-        for note in notes:
-            self.midi_data.addNote(track, 0, note, time, dur, 100)
-            time += dur
-
     def seq_notes(self, notes, track=0, time=0):
         """notes is iterable where every item is (pitch, octave, dur,
         volume) or a NoteSeq instance
