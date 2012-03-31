@@ -2,9 +2,6 @@ from pyknon.MidiFile import MIDIFile
 from pyknon import musiclib
 
 
-DURATIONS = [0.0625, 0.125, 0.25, 0.5, 1, 2, 3, 4]
-
-
 class MidiError(Exception):
     pass
 
