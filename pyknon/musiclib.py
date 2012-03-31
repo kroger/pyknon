@@ -8,7 +8,7 @@ class MusiclibError(Exception):
 
 
 class Rest(object):
-    def __init__(self, dur=1):
+    def __init__(self, dur=0.25):
         self.dur = dur
 
     def __repr__(self):
@@ -26,7 +26,7 @@ class Rest(object):
 
 
 class Note(object):
-    def __init__(self, value=0, octave=5, dur=1, volume=100):
+    def __init__(self, value=0, octave=5, dur=0.25, volume=100):
         if isinstance(value, str):
             self.value, self.octave, self.dur, self.volume = notation.parse_note(value)
         else:
@@ -78,10 +78,18 @@ class NoteSeq(collections.MutableSequence):
     @staticmethod
     def _is_note_or_rest(args):
         return all([True if isinstance(x, Note) or isinstance(x, Rest) else False for x in args])
+
+    @staticmethod
+    def _make_note_or_rest(note_list):
+        if note_list[0] is not None:
+            return Note(*note_list)
+        else:
+            return Rest(note_list[2])
         
     def __init__(self, args=[]):
         if isinstance(args, str):
-            self.items = notation.parse_notes(args.split())
+            note_lists = notation.parse_notes(args.split())
+            self.items = [self._make_note_or_rest(x) for x in note_lists]
         elif isinstance(args, collections.Iterable):
             if self._is_note_or_rest(args):
                 self.items = args

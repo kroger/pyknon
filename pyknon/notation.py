@@ -45,7 +45,7 @@ def parse_note(note, volume=120, prev_octave=5, prev_dur=0.25):
     duration = parse_dur(dur, dots) if dur else prev_dur
 
     if pitch in ["r", "R"]:
-        return nil, octave, duration, nil
+        return None, octave, duration, None
     else:
         pitch_number = note_names.index(pitch.lower())
         acc_number = parse_accidental(acc)
@@ -61,9 +61,8 @@ def parse_notes(notes, volume=120):
     for item in notes:
         number, octave, dur, vol = parse_note(item, volume, prev_oct, prev_dur)
         result.append((number, octave, dur, vol))
-        prev_octave = octave
+        prev_oct = octave
         prev_dur = dur
-
     return result
 
 
