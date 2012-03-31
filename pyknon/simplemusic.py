@@ -1,13 +1,9 @@
 from __future__ import division
-from itertools import combinations
+from itertools import combinations, chain
 from pyknon import pc_sets
 
 
 PC_SETS = pc_sets.pc_sets
-
-
-def flatten(alist):
-    return [item for sublist in alist for item in sublist]
 
 
 def mod12(n):
@@ -27,7 +23,8 @@ def intervals(notes):
 
 
 def all_intervals(notes):
-    return sorted(flatten([intervals(n) for n in combinations(sorted(notes), 2)]))
+    intervals_list = [intervals(n) for n in combinations(sorted(notes), 2)]
+    return sorted(chain.from_iterable(intervals_list))
 
 
 def set_sizes(pset):
