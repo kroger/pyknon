@@ -93,6 +93,12 @@ class TestNoteSeqOperations(unittest.TestCase):
         seq2 = NoteSeq("D E")
         self.assertEqual(seq1, seq2)
 
+    def test_setitem(self):
+        seq1 = NoteSeq("C D E")
+        seq2 = NoteSeq("C D# E")
+        seq1[1] = Note("D#")
+        self.assertEqual(seq1, seq2)
+
     def test_len(self):
         seq = NoteSeq("C D E F")
         self.assertEqual(len(seq), 4)
