@@ -41,7 +41,6 @@ def transposition(notes, index):
 
 
 def inversion(notes, index=0):
-    # FIXME: check Jama's reisa and document
     return [mod12(index - n) for n in notes]
 
 

@@ -57,7 +57,9 @@ class TestNote(unittest.TestCase):
     def test_inversion(self):
         n1 = [0, 4, 7]
         n2 = [0, 8, 5]
-        self.assertEqual(music.inversion(n1, 0), n2)
+        n3 = music.inversion(n1, 0)
+        self.assertEqual(n3, n2)
+        self.assertEqual(music.inversion(n3), n1)
 
     def test_transposition_startswith(self):
         n1 = [3, 7, 11, 10]
