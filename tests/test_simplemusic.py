@@ -70,6 +70,7 @@ class TestNote(unittest.TestCase):
         n1 = [3, 7, 11, 10]
         n2 = [3, 11, 7, 8]
         self.assertEqual(music.inversion_startswith(n1, 3), n2)
+        self.assertEqual(music.inversion_startswith([11, 10, 7], 1), [1, 2, 5])
 
     def test_inversion_first_note(self):
         self.assertEqual(music.inversion_first_note([3, 7, 9]), [3, 11, 9])
