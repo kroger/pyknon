@@ -11,3 +11,7 @@ doc:
 
 view: doc
 	open doc/_build/html/index.html
+
+clean:
+	find . -name "*.pyc" | xargs rm
+
