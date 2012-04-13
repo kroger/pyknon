@@ -1,11 +1,10 @@
 from __future__ import division
-import sys
 
 try:
     import unittest2 as unittest
 except:
     import unittest
-    
+
 import pyknon.simplemusic as music
 
 
@@ -126,7 +125,7 @@ class TestNote(unittest.TestCase):
         self.assertEqual(music.accidentals("D##"), 2)
         self.assertEqual(music.accidentals("Ebb"), -2)
         self.assertEqual(music.accidentals("Ab"), -1)
-        
+
     def test_note_accidental(self):
         self.assertEqual(music.note_accidental("Eb"), (4, -1))
         self.assertEqual(music.note_accidental("C"), (0, 0))
