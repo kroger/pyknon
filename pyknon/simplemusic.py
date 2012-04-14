@@ -119,7 +119,10 @@ def _get_quality_for_non_perfect_interval(interval_name, chromatic_interval):
     index_map = {"Second": 0, "Third": 2, "Sixth": 7, "Seventh": 9}
     quality_map = "Diminished Minor Major Augmented".split()
     index = chromatic_interval - index_map[interval_name]
-    return quality_map[index]
+    # make shure i is always between 0 and 3
+    i = min(max(index, 0), 3)
+    doubly = "Doubly " * abs(index - i)
+    return doubly + quality_map[i]
 
 def diatonic_interval(note_string1, note_string2):
     quantity_map = "Unison Second Second Third Third Fourth Fourth Fifth Sixth Sixth Seventh Seventh".split()

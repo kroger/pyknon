@@ -134,3 +134,7 @@ class TestSimplemusic(unittest.TestCase):
         self.assertEqual(music.diatonic_interval("D", "B#"), "Augmented Sixth")
         self.assertEqual(music.diatonic_interval("E", "C"), "Minor Sixth")
         self.assertEqual(music.diatonic_interval("Eb", "C"), "Major Sixth")
+        self.assertEqual(music.diatonic_interval("Db", "F#"), "Augmented Third")
+        self.assertEqual(music.diatonic_interval("Db", "F##"), "Doubly Augmented Third")
+        self.assertEqual(music.diatonic_interval("D", "Fbb"), "Doubly Diminished Third")
+        self.assertEqual(music.diatonic_interval("D#", "Fbb"), "Doubly Doubly Diminished Third")
