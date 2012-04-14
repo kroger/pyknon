@@ -115,5 +115,20 @@ def durations(notes_values, unity, tempo):
     return [note_duration(nv, unity, tempo) for nv in notes_values]
 
 
+def _get_quality_for_non_perfect_interval(interval_name, chromatic_interval):
+    index_map = {"Second": 0, "Third": 2, "Sixth": 7, "Seventh": 9}
+    quality_map = "Diminished Minor Major Augmented".split()
+    index = chromatic_interval - index_map[interval_name]
+    return quality_map[index]
+
 def diatonic_interval(note_string1, note_string2):
-    pass
+    quantity_map = "Unison Second Second Third Third Fourth Fourth Fifth Sixth Sixth Seventh Seventh".split()
+    n1, acc1 = note_accidental(note_string1)
+    n2, acc2 = note_accidental(note_string2)
+    note1 = name_to_number(note_string1)
+    note2 = name_to_number(note_string2)
+    chromatic_interval = interval(note2, note1)
+    diatonic_interval = interval(n2, n1)
+    quantity_name = quantity_map[diatonic_interval]
+    quality_name = _get_quality_for_non_perfect_interval(quantity_name, chromatic_interval)
+    return "%s %s" % (quality_name, quantity_name)
