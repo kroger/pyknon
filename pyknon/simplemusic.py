@@ -115,25 +115,22 @@ def durations(notes_values, unity, tempo):
     return [note_duration(nv, unity, tempo) for nv in notes_values]
 
 
-def _get_quality_for_non_perfect_interval(interval_name, chromatic_interval):
-    index_map = {"Second": 0, "Third": 2, "Sixth": 7, "Seventh": 9}
-    quality_map = ['Diminished', 'Minor', 'Major', 'Augmented']
+def get_quality(interval_name, chromatic_interval):
+    def get_doubly(index):
+        max_index = len(quality_map) - 1
+        # make shure i is always between 0 and max_index
+        i = min(max(index, 0), max_index)
+        return i, "Doubly " * abs(index - i)
 
-    max_index = len(quality_map) - 1
-    index = chromatic_interval - index_map[interval_name]
-    i = min(max(index, 0), max_index)   # make shure i is always between 0 and 3
-    doubly = "Doubly " * abs(index - i)
-    return doubly + quality_map[i]
+    major = ['Diminished', 'Minor', 'Major', 'Augmented']
+    perfect = ["Diminished", "Perfect", "Augmented"]
 
+    index_map = {"Second": (0, major), "Third": (2, major),
+                 "Fourth": (4, perfect), "Fifth": (6, perfect),
+                 "Sixth": (7, major), "Seventh": (9, major)}
 
-def _get_quality_for_perfect_interval(interval_name, chromatic_interval):
-    index_map = {"Fourth": 4, "Fifth": 6}
-    quality_map = ["Diminished", "Perfect", "Augmented"]
-
-    max_index = len(quality_map) - 1
-    index = chromatic_interval - index_map[interval_name]
-    i = min(max(index, 0), max_index)   # make shure i is always between 0 and 2
-    doubly = "Doubly " * abs(index - i)
+    index, quality_map = index_map[interval_name]
+    i, doubly = get_doubly(chromatic_interval - index)
     return doubly + quality_map[i]
 
 
@@ -148,8 +145,5 @@ def diatonic_interval(note_string1, note_string2):
     chromatic_interval = interval(note2, note1)
     diatonic_interval = interval(n2, n1)
     quantity_name = quantity_map[diatonic_interval]
-    if quantity_name in ["Unison", "Fourth", "Fifth"]:
-        quality_name = _get_quality_for_perfect_interval(quantity_name, chromatic_interval)
-    else:
-        quality_name = _get_quality_for_non_perfect_interval(quantity_name, chromatic_interval)
+    quality_name = get_quality(quantity_name, chromatic_interval)
     return "%s %s" % (quality_name, quantity_name)
