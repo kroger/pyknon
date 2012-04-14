@@ -27,6 +27,5 @@ Contents:
    :maxdepth: 1
 
    tutorial.rst
-   pyknon.rst
    music.rst
    simplemusic.rst
