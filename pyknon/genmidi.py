@@ -1,5 +1,5 @@
 from pyknon.MidiFile import MIDIFile
-from pyknon import musiclib
+from pyknon import music
 
 
 class MidiError(Exception):
