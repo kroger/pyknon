@@ -15,6 +15,7 @@ def mod12(n):
 
 
 def interval(x, y):
+    """Return the numeric interval between two notes."""
     return mod12(x - y)
 
 
@@ -32,18 +33,26 @@ def all_intervals(notes):
 
 
 def transposition(notes, index):
+    """Transpose a set of notes by a numerical index."""
     return [mod12(n + index) for n in notes]
 
 
 def transposition_startswith(notes, start):
+    """Transpose a set of notes so it begins with `start` note."""
     return transposition(notes, start - notes[0])
 
 
 def inversion(notes, index=0):
+    """Invert a set of notes though an inversion index.
+
+    The inversion index is not very musical. the function
+    :func:`inversion_startswith` is probably more useful.
+    """
     return [mod12(index - n) for n in notes]
 
 
 def inversion_startswith(notes, start):
+    """Invert a set of notes so it begins with `start` note."""
     transp = transposition_startswith(notes, 0)
     return transposition_startswith(inversion(transp), start)
 
@@ -57,9 +66,9 @@ def rotate(item, n=1):
     return item[modn:] + item[0:modn]
 
 
-def rotate_set(pset):
-    # return all rotations of a set
-    return [rotate(pset, x) for x in range(0, len(pset))]
+def rotate_set(notes):
+    """Return all rotations of a collection of notes."""
+    return [rotate(notes, x) for x in range(0, len(notes))]
 
 
 def retrograde(notes):
