@@ -1,4 +1,4 @@
-.PHONY: coverage tests coverage docs
+.PHONY: coverage test coverage docs
 
 test:
 	py.test
