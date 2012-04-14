@@ -20,12 +20,12 @@ def points_in_a_circle(n_points, radius):
 def scaled_points(radius):
     points = points_in_a_circle(12, radius)
     return [(x + radius + MARGIN, radius - y + MARGIN) for x, y in points]
-    
+
 
 def plot_circle(canvas, width, points):
     canvas.create_oval(MARGIN, width, width, MARGIN)
 
-    
+
 def plot_points(canvas, points):
     for x, y in points:
         canvas.create_oval(x - 2, y - 2, x + 2, y + 2, fill="black")
@@ -60,7 +60,7 @@ def view(notes_list, width=400):
     canvas = canvas_notes(notes_list, width)
     mainloop()
 
-    
+
 def notes_ps(notes_list, filename, width=400):
     canvas = canvas_notes(notes_list, width)
     L, T, R, B = canvas.bbox(Tk.ALL)

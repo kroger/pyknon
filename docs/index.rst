@@ -1,20 +1,24 @@
-Pyknon Documentation
-====================
+======================
+ Pyknon Documentation
+======================
 
-Pyknon is a simple library for music Set Theory. The main goal is to
-have a simple library to write short scripts. For instance, if you
-want to write an on-line tool to generate 12-tone rows, this library
-maybe to you. On the other hand, if you want to parse music in complex
-formats such as MIDI or MusicXML and perform complex operations
-involving pitch and rhythm, you should use something like
-`music21 <http://mit.edu/music21/>`_.
+.. rubric:: Make music with Python.
 
-Another goal of Pyknon is to be something good to reason about the
-properties and operations of pitch-class sets.
+Pyknon is a simple music library for Python hackers. With Pyknon you
+can generate Midi files quickly and reason about musical
+proprieties. It works with Python 2.6, 2.7, and 3.2.
 
-    * functional
-    * simple
-    * documented
+Pyknon has modules for different things. I recommend you start by
+checking the section :ref:`tutorial`. It's a hands on approach on how
+to use this library.
+
+You'll almost always want to work with the modules :mod:`music` and
+:mod:`genmidi` (see section :ref:`music`).
+
+The module :mod:`simplemusic` is a simple numeric library for music
+operations. It's intended mainly for teaching because it's simple. If
+you want to learn more about Set Theory in Music, you may want to look
+at the module :mod:`pcset` (see section :ref:`simplemusic`)
 
 Contents:
 ---------
@@ -22,12 +26,7 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
+   tutorial.rst
    pyknon.rst
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+   music.rst
+   simplemusic.rst

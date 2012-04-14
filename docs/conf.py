@@ -3,6 +3,7 @@
 import sys, os
 
 sys.path.append(os.path.abspath('extensions'))
+sys.path.append(os.path.abspath("../pyknon"))
 
 # -- General configuration -----------------------------------------------------
 

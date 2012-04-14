@@ -1,3 +1,11 @@
+"""
+A simple numeric library for music computation.
+
+This module is good for teaching, demonstration, and quick hacks. To
+generate actual music you should use the music module.
+
+"""
+
 from __future__ import division
 from itertools import combinations, chain
 

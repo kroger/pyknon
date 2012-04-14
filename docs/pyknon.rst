@@ -26,7 +26,6 @@ note with a duration like '16..' will have a total duration of
 
 >>> calculate_duration(16, 2)
     Fraction(7, 64)
-    
 
 Integer notation
 ----------------
@@ -167,4 +166,3 @@ Subset and supersets
 12-tone matrix
 --------------
 
-    .. autofunction:: simplemusic.matrix
