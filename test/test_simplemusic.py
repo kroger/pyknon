@@ -138,3 +138,18 @@ class TestSimplemusic(unittest.TestCase):
         self.assertEqual(music.diatonic_interval("Db", "F##"), "Doubly Augmented Third")
         self.assertEqual(music.diatonic_interval("D", "Fbb"), "Doubly Diminished Third")
         self.assertEqual(music.diatonic_interval("D#", "Fbb"), "Doubly Doubly Diminished Third")
+        self.assertEqual(music.diatonic_interval("D", "A"), "Perfect Fifth")
+        self.assertEqual(music.diatonic_interval("C", "F"), "Perfect Fourth")
+        self.assertEqual(music.diatonic_interval("C", "F#"), "Augmented Fourth")
+        self.assertEqual(music.diatonic_interval("C", "Fb"), "Diminished Fourth")
+        self.assertEqual(music.diatonic_interval("C", "Gb"), "Diminished Fifth")
+        self.assertEqual(music.diatonic_interval("C", "G"), "Perfect Fifth")
+        self.assertEqual(music.diatonic_interval("C", "G#"), "Augmented Fifth")
+        self.assertEqual(music.diatonic_interval("Bb", "F"), "Perfect Fifth")
+        self.assertEqual(music.diatonic_interval("Bb", "F#"), "Augmented Fifth")
+        self.assertEqual(music.diatonic_interval("B", "F"), "Diminished Fifth")
+        self.assertEqual(music.diatonic_interval("C", "F##"), "Doubly Augmented Fourth")
+        self.assertEqual(music.diatonic_interval("Db", "A#"), "Doubly Augmented Fifth")
+
+        ## tritone is a bitch
+        #self.assertEqual(music.diatonic_interval("F", "B"), "Augmented Fourth")
