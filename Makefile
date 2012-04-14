@@ -1,4 +1,4 @@
-.PHONY: coverage tests cov doc
+.PHONY: coverage tests coverage docs
 
 test:
 	py.test
@@ -6,12 +6,15 @@ test:
 coverage:
 	py.test --cov=pyknon --cov-report=html
 
-doc:
-	cd doc && make html
+docs:
+	cd docs && make html
 
-view: doc
-	open doc/_build/html/index.html
+view: docs
+	open docs/_build/html/index.html
 
 clean:
 	find . -name "*.pyc" | xargs rm
+
+cleanall: clean
+	rm -rf htmlcov docs/_build
 

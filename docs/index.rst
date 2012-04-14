@@ -1,5 +1,5 @@
 Pyknon Documentation
-======================
+====================
 
 Pyknon is a simple library for music Set Theory. The main goal is to
 have a simple library to write short scripts. For instance, if you

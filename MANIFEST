@@ -7,4 +7,5 @@ pyknon/genmidi.py
 pyknon/musiclib.py
 pyknon/notation.py
 pyknon/pc_sets.py
+pyknon/plot.py
 pyknon/simplemusic.py
