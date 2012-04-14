@@ -4,6 +4,9 @@
  Simplemusic and Pitch Class Sets
 ==================================
 
+Simplemusic
+===========
+
 .. autofunction:: simplemusic.mod12
 
 >>> simplemusic.mod12(13)
@@ -19,3 +22,7 @@
 
 >>> simplemusic.inversion_startswith([0, 4, 7], 2)
 [2, 10, 7]
+
+
+Pitch Class Set
+===============

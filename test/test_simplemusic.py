@@ -97,19 +97,17 @@ class TestSimplemusic(unittest.TestCase):
         self.assertEqual(music.accidentals("Ebb"), -2)
         self.assertEqual(music.accidentals("Ab"), -1)
 
-    def test_note_accidental(self):
-        self.assertEqual(music.note_accidental("Eb"), (4, -1))
-        self.assertEqual(music.note_accidental("C"), (0, 0))
-        self.assertEqual(music.note_accidental("D#"), (2, 1))
-        self.assertEqual(music.note_accidental("B#"), (11, 1))
-        self.assertEqual(music.note_accidental("Bb"), (11, -1))
-
     def test_name_to_number(self):
         self.assertEqual(music.name_to_number("D###"), 5)
         self.assertEqual(music.name_to_number("D"), 2)
         self.assertEqual(music.name_to_number("A"), 9)
         self.assertEqual(music.name_to_number("Eb"), 3)
         self.assertEqual(music.name_to_number("Cbbb"), 9)
+
+    def test_name_to_diatonic(self):
+        self.assertEqual(music.name_to_diatonic("C"), 0)
+        self.assertEqual(music.name_to_diatonic("D###"), 1)
+        self.assertEqual(music.name_to_diatonic("Bb"), 6)
 
     def test_note_duration(self):
         self.assertEqual(music.note_duration(1/4, 1/4, 60), 1.0)
@@ -150,6 +148,4 @@ class TestSimplemusic(unittest.TestCase):
         self.assertEqual(music.diatonic_interval("B", "F"), "Diminished Fifth")
         self.assertEqual(music.diatonic_interval("C", "F##"), "Doubly Augmented Fourth")
         self.assertEqual(music.diatonic_interval("Db", "A#"), "Doubly Augmented Fifth")
-
-        ## tritone is a bitch
-        #self.assertEqual(music.diatonic_interval("F", "B"), "Augmented Fourth")
+        self.assertEqual(music.diatonic_interval("F", "B"), "Augmented Fourth")

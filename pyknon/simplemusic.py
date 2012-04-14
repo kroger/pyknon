@@ -94,17 +94,19 @@ def accidentals(note_string):
         return 0
 
 
-def note_accidental(note_string):
+def name_to_number(note_string):
     notes = "C . D . E F . G . A . B".split()
     name = note_string[0:1].upper()
     number = notes.index(name)
     acc = accidentals(note_string)
-    return number, acc
-
-
-def name_to_number(note_string):
-    number, acc = note_accidental(note_string)
     return mod12(number + acc)
+
+
+def name_to_diatonic(note_string):
+    """Return a number from 0 to 6 for the note name without the accidental."""
+    notes = "C D E F G A B".split()
+    name = note_string[0:1].upper()
+    return notes.index(name)
 
 
 def note_duration(note_value, unity, tempo):
@@ -135,15 +137,13 @@ def get_quality(interval_name, chromatic_interval):
 
 
 def diatonic_interval(note_string1, note_string2):
-    ## if I choose 6 to be Fifth, F-B fails
-    ## if I choose 6 to be Fourth, B-F fails
-    quantity_map = "Unison Second Second Third Third Fourth Fifth Fifth Sixth Sixth Seventh Seventh".split()
-    n1, acc1 = note_accidental(note_string1)
-    n2, acc2 = note_accidental(note_string2)
+    quantity_map = ["Unison", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh"]
+    n1 = name_to_diatonic(note_string1)
+    n2 = name_to_diatonic(note_string2)
     note1 = name_to_number(note_string1)
     note2 = name_to_number(note_string2)
+    diatonic_interval = (n2 - n1) % 7
     chromatic_interval = interval(note2, note1)
-    diatonic_interval = interval(n2, n1)
     quantity_name = quantity_map[diatonic_interval]
     quality_name = get_quality(quantity_name, chromatic_interval)
     return "%s %s" % (quality_name, quantity_name)
