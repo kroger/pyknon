@@ -1,7 +1,7 @@
 import unittest
 import tempfile
 from pyknon.genmidi import Midi
-from pyknon.musiclib import NoteSeq, Note
+from pyknon.music import NoteSeq, Note
 
 
 class TestRest(unittest.TestCase):

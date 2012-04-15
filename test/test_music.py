@@ -1,5 +1,5 @@
 import unittest
-from pyknon.musiclib import MusiclibError, Note, NoteSeq, Rest
+from pyknon.music import MusiclibError, Note, NoteSeq, Rest
 
 
 class TestRest(unittest.TestCase):
