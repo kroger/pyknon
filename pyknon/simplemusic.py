@@ -118,7 +118,7 @@ def durations(notes_values, unity, tempo):
 
 
 def get_quality(diatonic_interval, chromatic_interval):
-    ## Doesn't work for Doubly Diminished Unison
+    ## Doesn't work for Doubly Diminished Unison, DD Second, and Augmented Seventh
     if diatonic_interval in [0, 3, 4]:
         quality_map = ["Diminished", "Perfect", "Augmented"]
     else:
