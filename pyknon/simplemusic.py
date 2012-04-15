@@ -117,33 +117,26 @@ def durations(notes_values, unity, tempo):
     return [note_duration(nv, unity, tempo) for nv in notes_values]
 
 
-def get_quality(interval_name, chromatic_interval):
-    def get_doubly(index):
-        max_index = len(quality_map) - 1
-        # make shure i is always between 0 and max_index
-        i = min(max(index, 0), max_index)
-        return i, "Doubly " * abs(index - i)
+def get_quality(diatonic_interval, chromatic_interval):
+    if diatonic_interval in [0, 3, 4]:
+        quality_map = ["Diminished", "Perfect", "Augmented"]
+    else:
+        quality_map = ['Diminished', 'Minor', 'Major', 'Augmented']
 
-    major = ['Diminished', 'Minor', 'Major', 'Augmented']
-    perfect = ["Diminished", "Perfect", "Augmented"]
-
-    index_map = {"Second": (0, major), "Third": (2, major),
-                 "Fourth": (4, perfect), "Fifth": (6, perfect),
-                 "Sixth": (7, major), "Seventh": (9, major)}
-
-    index, quality_map = index_map[interval_name]
-    i, doubly = get_doubly(chromatic_interval - index)
-    return doubly + quality_map[i]
+    index_map = [-1, 0, 2, 4, 6, 7, 9]
+    index = chromatic_interval - index_map[diatonic_interval]
+    i = min(max(index, 0), len(quality_map) - 1)
+    return "Doubly " * abs(index - i) + quality_map[i]
 
 
-def diatonic_interval(note_string1, note_string2):
-    quantity_map = ["Unison", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh"]
-    n1 = name_to_diatonic(note_string1)
-    n2 = name_to_diatonic(note_string2)
-    note1 = name_to_number(note_string1)
-    note2 = name_to_number(note_string2)
-    diatonic_interval = (n2 - n1) % 7
-    chromatic_interval = interval(note2, note1)
-    quantity_name = quantity_map[diatonic_interval]
-    quality_name = get_quality(quantity_name, chromatic_interval)
+def diatonic_interval(note1, note2):
+    def dint(x, y): return (x - y) % 7
+
+    quantities = ["Unison", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh"]
+    n1, n2 = name_to_number(note1), name_to_number(note2)
+    d1, d2 = name_to_diatonic(note1), name_to_diatonic(note2)
+    diatonic_interval = dint(d2, d1)
+    chromatic_interval = interval(n2, n1)
+    quantity_name = quantities[diatonic_interval]
+    quality_name = get_quality(diatonic_interval, chromatic_interval)
     return "%s %s" % (quality_name, quantity_name)
