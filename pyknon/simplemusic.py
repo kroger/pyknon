@@ -129,6 +129,25 @@ def get_quality(diatonic_interval, chromatic_interval):
     return quality_map[chromatic_interval - index_map[diatonic_interval]]
 
 
+def diatonic_interval(note1, note2):
+    quantities = ["Unison", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh"]
+    n1, n2 = name_to_number(note1), name_to_number(note2)
+    d1, d2 = name_to_diatonic(note1), name_to_diatonic(note2)
+    chromatic_interval = interval(n2, n1)
+    diatonic_interval = (d2 - d1) % 7
+    quantity_name = quantities[diatonic_interval]
+    quality_name = get_quality(diatonic_interval, chromatic_interval)
+    return "%s %s" % (quality_name, quantity_name)
+
+
+###############################################################################
+## I wanted to keep get_quality and diatonic_interval simple for
+## "Music for Geeks and Nerds" since the examples in the book are read
+## from this file. The next two functions implement Doubly Augmented
+## and Doubly Diminished intervals, although it's ugly to have to
+## repeat code in diatonic_interval2 (I do it in order to be able to
+## run the tests).
+
 def get_quality_doubly(diatonic_interval, chromatic_interval):
     if diatonic_interval in [0, 3, 4]:
         quality_map = ["Diminished", "Perfect", "Augmented"]
@@ -142,12 +161,12 @@ def get_quality_doubly(diatonic_interval, chromatic_interval):
     return "Doubly " * abs(index - i) + quality_map[i]
 
 
-def diatonic_interval(note1, note2, get_quality_fn=get_quality):
+def diatonic_interval2(note1, note2):
     quantities = ["Unison", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh"]
     n1, n2 = name_to_number(note1), name_to_number(note2)
     d1, d2 = name_to_diatonic(note1), name_to_diatonic(note2)
     chromatic_interval = interval(n2, n1)
     diatonic_interval = (d2 - d1) % 7
     quantity_name = quantities[diatonic_interval]
-    quality_name = get_quality_fn(diatonic_interval, chromatic_interval)
+    quality_name = get_quality_doubly(diatonic_interval, chromatic_interval)
     return "%s %s" % (quality_name, quantity_name)
