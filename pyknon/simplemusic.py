@@ -126,8 +126,6 @@ def get_quality(diatonic_interval, chromatic_interval):
 
     index_map = [-1, 0, 2, 4, 6, 7, 9]
     index = chromatic_interval - index_map[diatonic_interval]
-    # special case for diminished unison
-    index = 0 if index == 12 else index
     # make sure i is between 0 and the largest index
     i = min(max(index, 0), len(quality_map) - 1)
     return "Doubly " * abs(index - i) + quality_map[i]
