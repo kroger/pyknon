@@ -117,8 +117,19 @@ def durations(notes_values, unity, tempo):
     return [note_duration(nv, unity, tempo) for nv in notes_values]
 
 
+## Doesn't work for Doubly Diminished Unison, Doubly Diminished
+## Second, and Augmented Seventh
 def get_quality(diatonic_interval, chromatic_interval):
-    ## Doesn't work for Doubly Diminished Unison, DD Second, and Augmented Seventh
+    if diatonic_interval in [0, 3, 4]:
+        quality_map = ["Diminished", "Perfect", "Augmented"]
+    else:
+        quality_map = ['Diminished', 'Minor', 'Major', 'Augmented']
+
+    index_map = [-1, 0, 2, 4, 6, 7, 9]
+    return quality_map[chromatic_interval - index_map[diatonic_interval]]
+
+
+def get_quality_doubly(diatonic_interval, chromatic_interval):
     if diatonic_interval in [0, 3, 4]:
         quality_map = ["Diminished", "Perfect", "Augmented"]
     else:
@@ -131,12 +142,12 @@ def get_quality(diatonic_interval, chromatic_interval):
     return "Doubly " * abs(index - i) + quality_map[i]
 
 
-def diatonic_interval(note1, note2):
+def diatonic_interval(note1, note2, get_quality_fn=get_quality):
     quantities = ["Unison", "Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh"]
     n1, n2 = name_to_number(note1), name_to_number(note2)
     d1, d2 = name_to_diatonic(note1), name_to_diatonic(note2)
-    diatonic_interval = (d2 - d1) % 7
     chromatic_interval = interval(n2, n1)
+    diatonic_interval = (d2 - d1) % 7
     quantity_name = quantities[diatonic_interval]
-    quality_name = get_quality(diatonic_interval, chromatic_interval)
+    quality_name = get_quality_fn(diatonic_interval, chromatic_interval)
     return "%s %s" % (quality_name, quantity_name)
