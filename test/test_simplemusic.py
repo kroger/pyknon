@@ -1,4 +1,5 @@
 from __future__ import division
+from fractions import Fraction as F
 
 try:
     import unittest2 as unittest
@@ -112,6 +113,11 @@ class TestSimplemusic(unittest.TestCase):
     def test_note_duration(self):
         self.assertEqual(music.note_duration(1/4, 1/4, 60), 1.0)
         self.assertEqual(music.note_duration(1/2, 1/4, 60), 2.0)
+
+    def test_dotted_duration(self):
+        self.assertEqual(music.dotted_duration(F(1/4), 0), F(1/4))
+        self.assertEqual(music.dotted_duration(F(1/4), 1), F(3/8))
+        self.assertEqual(music.dotted_duration(F(1/4), 2), F(7/16))
 
     def test_durations(self):
         self.assertEqual(music.durations([1/2, 1/4, 1/8], 1/4, 60), [2.0, 1.0, 0.5])

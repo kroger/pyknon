@@ -8,6 +8,7 @@ generate actual music you should use the music module.
 
 from __future__ import division
 from itertools import combinations, chain
+from fractions import Fraction
 
 
 def mod12(n):
@@ -113,12 +114,20 @@ def note_duration(note_value, unity, tempo):
     return (60.0 * note_value) / (tempo * unity)
 
 
+def dotted_duration(duration, dots):
+    """
+    Sn = a(1 - r^n)/1 - r where a is the first term, r is the common
+    ration (1/2 in our case) and n is the number of terms.
+
+    """
+    ratio = Fraction(1, 2)
+    return duration * (1 - ratio ** (dots + 1)) / ratio
+
+
 def durations(notes_values, unity, tempo):
     return [note_duration(nv, unity, tempo) for nv in notes_values]
 
 
-## Doesn't work for Doubly Diminished Unison, Doubly Diminished
-## Second, and Augmented Seventh
 def get_quality(diatonic_interval, chromatic_interval):
     if diatonic_interval in [0, 3, 4]:
         quality_map = ["Diminished", "Perfect", "Augmented"]
