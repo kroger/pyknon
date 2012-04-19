@@ -12,6 +12,7 @@ class Midi(object):
         instrument: can be an integer or a list
         """
 
+        self.number_tracks = number_tracks
         self.midi_data = MIDIFile(number_tracks)
 
         for track in range(number_tracks):
@@ -21,6 +22,9 @@ class Midi(object):
             self.midi_data.addProgramChange(track, 0, 0, instr)
 
     def seq_notes(self, noteseq, track=0, time=0):
+        if track + 1 > self.number_tracks:
+            raise MidiError("You are trying to use more tracks than we have.")
+
         for note, octave, dur, volume in noteseq.note_list():
             # The MIDI library uses 1 for quarter note but we use 0.25
             midi_dur = dur * 4

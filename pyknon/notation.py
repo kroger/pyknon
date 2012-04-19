@@ -39,7 +39,10 @@ def parse_dur(dur, dots=""):
 def parse_note(note, volume=120, prev_octave=5, prev_dur=0.25):
     note_names = "c # d # e f # g # a # b".split()
     m = REGEX_NOTE.match(note)
-    pitch, acc, dur, dots, octv = m.groups()
+    if m:
+        pitch, acc, dur, dots, octv = m.groups()
+    else:
+        raise NotationError("You need to enter at least one note.")
 
     octave = parse_octave(octv) if octv else prev_octave
     duration = parse_dur(dur, dots) if dur else prev_dur
