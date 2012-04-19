@@ -30,7 +30,7 @@ class TestNote(unittest.TestCase):
 
     def test_repr(self):
         representation = Note(value=3, octave=5).__repr__()
-        self.assertEqual(representation, "<Note: 3.5>")
+        self.assertEqual(representation, "<Note: 3, 5, 0.25>")
 
     def test_note_equal(self):
         self.assertFalse(Note(3) == Note(15))

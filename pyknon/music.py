@@ -43,7 +43,7 @@ class Note(object):
         return self.midi_number - other.midi_number
 
     def __repr__(self):
-        return "<Note: {0}.{1}>".format(self.value, self.octave)
+        return "<Note: {0}, {1}, {2}>".format(self.value, self.octave, self.dur)
 
     @property
     def midi_number(self):
