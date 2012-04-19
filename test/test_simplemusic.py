@@ -124,69 +124,47 @@ class TestSimplemusic(unittest.TestCase):
         self.assertEqual(music.durations([1/2, 1/4, 1/8], 1/4, 120), [1.0, 0.5, 0.25])
 
 
-class TestDiatonicInterval(unittest.TestCase):
-    def test_diatonic_interval_unison(self):
-        self.assertEqual(music.diatonic_interval("C", "C"), "Perfect Unison")
-        self.assertEqual(music.diatonic_interval("C", "C#"), "Augmented Unison")
+class TestIntervalName(unittest.TestCase):
+    def test_interval_name_unison(self):
+        self.assertEqual(music.interval_name("C", "C"), "Perfect Unison")
+        self.assertEqual(music.interval_name("C", "C#"), "Augmented Unison")
 
-    def test_diatonic_interval_second(self):
-        self.assertEqual(music.diatonic_interval("D", "E"), "Major Second")
-        self.assertEqual(music.diatonic_interval("D", "Eb"), "Minor Second")
-        self.assertEqual(music.diatonic_interval("E", "F"), "Minor Second")
-        self.assertEqual(music.diatonic_interval("E", "F#"), "Major Second")
-        self.assertEqual(music.diatonic_interval("Eb", "F#"), "Augmented Second")
-        self.assertEqual(music.diatonic_interval("E", "Fb"), "Diminished Second")
+    def test_interval_name_second(self):
+        self.assertEqual(music.interval_name("D", "E"), "Major Second")
+        self.assertEqual(music.interval_name("D", "Eb"), "Minor Second")
+        self.assertEqual(music.interval_name("E", "F"), "Minor Second")
+        self.assertEqual(music.interval_name("E", "F#"), "Major Second")
+        self.assertEqual(music.interval_name("Eb", "F#"), "Augmented Second")
+        self.assertEqual(music.interval_name("E", "Fb"), "Diminished Second")
 
-    def test_diatonic_interval_third(self):
-        self.assertEqual(music.diatonic_interval("D", "F"), "Minor Third")
-        self.assertEqual(music.diatonic_interval("D", "F#"), "Major Third")
-        self.assertEqual(music.diatonic_interval("D", "Fb"), "Diminished Third")
-        self.assertEqual(music.diatonic_interval("C", "E"), "Major Third")
-        self.assertEqual(music.diatonic_interval("C", "Eb"), "Minor Third")
-        self.assertEqual(music.diatonic_interval("Db", "F#"), "Augmented Third")
+    def test_interval_name_third(self):
+        self.assertEqual(music.interval_name("D", "F"), "Minor Third")
+        self.assertEqual(music.interval_name("D", "F#"), "Major Third")
+        self.assertEqual(music.interval_name("D", "Fb"), "Diminished Third")
+        self.assertEqual(music.interval_name("C", "E"), "Major Third")
+        self.assertEqual(music.interval_name("C", "Eb"), "Minor Third")
+        self.assertEqual(music.interval_name("Db", "F#"), "Augmented Third")
 
-    def test_diatonic_interval_fourth(self):
-        self.assertEqual(music.diatonic_interval("C", "F"), "Perfect Fourth")
-        self.assertEqual(music.diatonic_interval("C", "F#"), "Augmented Fourth")
-        self.assertEqual(music.diatonic_interval("C", "Fb"), "Diminished Fourth")
-        self.assertEqual(music.diatonic_interval("F", "B"), "Augmented Fourth")
+    def test_interval_name_fourth(self):
+        self.assertEqual(music.interval_name("C", "F"), "Perfect Fourth")
+        self.assertEqual(music.interval_name("C", "F#"), "Augmented Fourth")
+        self.assertEqual(music.interval_name("C", "Fb"), "Diminished Fourth")
+        self.assertEqual(music.interval_name("F", "B"), "Augmented Fourth")
 
-    def test_diatonic_interval_fifth(self):
-        self.assertEqual(music.diatonic_interval("D", "A"), "Perfect Fifth")
-        self.assertEqual(music.diatonic_interval("C", "Gb"), "Diminished Fifth")
-        self.assertEqual(music.diatonic_interval("B", "F"), "Diminished Fifth")
-        self.assertEqual(music.diatonic_interval("Bb", "F#"), "Augmented Fifth")
+    def test_interval_name_fifth(self):
+        self.assertEqual(music.interval_name("D", "A"), "Perfect Fifth")
+        self.assertEqual(music.interval_name("C", "Gb"), "Diminished Fifth")
+        self.assertEqual(music.interval_name("B", "F"), "Diminished Fifth")
+        self.assertEqual(music.interval_name("Bb", "F#"), "Augmented Fifth")
 
-    def test_diatonic_interval_sixth(self):
-        self.assertEqual(music.diatonic_interval("D", "B"), "Major Sixth")
-        self.assertEqual(music.diatonic_interval("E", "C"), "Minor Sixth")
-        self.assertEqual(music.diatonic_interval("D", "B#"), "Augmented Sixth")
-        self.assertEqual(music.diatonic_interval("E", "Cb"), "Diminished Sixth")
+    def test_interval_name_sixth(self):
+        self.assertEqual(music.interval_name("D", "B"), "Major Sixth")
+        self.assertEqual(music.interval_name("E", "C"), "Minor Sixth")
+        self.assertEqual(music.interval_name("D", "B#"), "Augmented Sixth")
+        self.assertEqual(music.interval_name("E", "Cb"), "Diminished Sixth")
 
-    def test_diatonic_interval_seventh(self):
-        self.assertEqual(music.diatonic_interval("C", "B"), "Major Seventh")
-        self.assertEqual(music.diatonic_interval("E", "D#"), "Major Seventh")
-        self.assertEqual(music.diatonic_interval("D", "C"), "Minor Seventh")
-        self.assertEqual(music.diatonic_interval("D", "Cb"), "Diminished Seventh")
-
-    def test_quality_doubly(self):
-        self.assertEqual(music.diatonic_interval2("Eb", "F##"), "Doubly Augmented Second")
-        self.assertEqual(music.diatonic_interval2("Db", "F##"), "Doubly Augmented Third")
-        self.assertEqual(music.diatonic_interval2("D", "Fbb"), "Doubly Diminished Third")
-        self.assertEqual(music.diatonic_interval2("Dbb", "F##"), "Doubly Doubly Augmented Third")
-        self.assertEqual(music.diatonic_interval2("D#", "Fbb"), "Doubly Doubly Diminished Third")
-        self.assertEqual(music.diatonic_interval2("C", "Fbb"), "Doubly Diminished Fourth")
-        self.assertEqual(music.diatonic_interval2("C", "F##"), "Doubly Augmented Fourth")
-        self.assertEqual(music.diatonic_interval2("B", "Fb"), "Doubly Diminished Fifth")
-        self.assertEqual(music.diatonic_interval2("Db", "A#"), "Doubly Augmented Fifth")
-        self.assertEqual(music.diatonic_interval2("Db", "B#"), "Doubly Augmented Sixth")
-        self.assertEqual(music.diatonic_interval2("E", "Cbb"), "Doubly Diminished Sixth")
-        self.assertEqual(music.diatonic_interval2("D", "Cbb"), "Doubly Diminished Seventh")
-
-    @unittest.expectedFailure
-    def test_diatonic_interval_fail(self):
-        self.assertEqual(music.diatonic_interval2("C", "Cbb"), "Doubly Diminished Unison")
-        self.assertEqual(music.diatonic_interval2("E", "Fbb"), "Doubly Diminished Second")
-        self.assertEqual(music.diatonic_interval("C", "Cb"), "Diminished Unison")
-        self.assertEqual(music.diatonic_interval("D", "Db"), "Diminished Unison")
-        self.assertEqual(music.diatonic_interval("D", "C##"), "Augmented Seventh")
+    def test_interval_name_seventh(self):
+        self.assertEqual(music.interval_name("C", "B"), "Major Seventh")
+        self.assertEqual(music.interval_name("E", "D#"), "Major Seventh")
+        self.assertEqual(music.interval_name("D", "C"), "Minor Seventh")
+        self.assertEqual(music.interval_name("D", "Cb"), "Diminished Seventh")
