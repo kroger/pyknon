@@ -35,7 +35,7 @@ class Midi(object):
                 self.midi_data.addNote(track, 0, note + (12 * octave), time, midi_dur, volume)
             time += midi_dur
 
-    def write_file(self, filename):
+    def write(self, filename):
         if isinstance(filename, str):
             with open(filename, 'wb') as midifile:
                 self.midi_data.writeFile(midifile)
