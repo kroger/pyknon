@@ -180,6 +180,7 @@ class NoteSeq(collections.MutableSequence):
     def stretch_dur(self, factor):
         return NoteSeq([x.stretch_dur(factor) for x in self.items])
 
+    ## TODO: gives an error with rests
     def intervals(self):
         v1 = [x.value for x in self]
         v2 = [x.value for x in self.rotate()]

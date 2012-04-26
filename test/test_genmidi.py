@@ -28,4 +28,4 @@ class TestWriteMidi(unittest.TestCase):
         notes1 = NoteSeq("D4 F#8 R A")
         midi = Midi(1, tempo=133)
         midi.seq_notes(notes1, track=0)
-        midi.write_file(tempfile.TemporaryFile())
+        midi.write(tempfile.TemporaryFile())
