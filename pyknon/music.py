@@ -12,7 +12,7 @@ class Rest(object):
         self.dur = dur
 
     def __repr__(self):
-        return "<Rest: {0}>".format(self.dur)
+        return "<R {0}>".format(self.dur)
 
     def __eq__(self, other):
         return self.dur == other.dur
@@ -43,7 +43,13 @@ class Note(object):
         return self.midi_number - other.midi_number
 
     def __repr__(self):
-        return "<Note: {0}, {1}, {2}>".format(self.value, self.octave, self.dur)
+        #return "<Note: {0}, {1}, {2}>".format(self.value, self.octave, self.dur)
+        return "<{0}>".format(self.name)
+
+    @property
+    def name(self):
+        note_names = "C C# D D# E F F# G G# A A# B".split()
+        return note_names[self.value % 12]
 
     @property
     def midi_number(self):
@@ -94,7 +100,7 @@ class NoteSeq(collections.MutableSequence):
                 notes.extend([note for note in line.split()])
             return notes
 
-    def __init__(self, args=[]):
+    def __init__(self, args=None):
         if isinstance(args, str):
             if args.startswith("file://"):
                 filename = args.replace("file://", "")
@@ -107,6 +113,8 @@ class NoteSeq(collections.MutableSequence):
                 self.items = args
             else:
                 raise MusiclibError("Every argument have to be a Note or a Rest.")
+        elif args is None:
+            self.items = []
         else:
             raise MusiclibError("NoteSeq doesn't accept this type of data.")
 

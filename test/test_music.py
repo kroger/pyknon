@@ -12,7 +12,7 @@ class TestRest(unittest.TestCase):
 
     def test_repr(self):
         representation = Rest(0.5).__repr__()
-        self.assertEqual(representation, "<Rest: 0.5>")
+        self.assertEqual(representation, "<R 0.5>")
 
 
 
@@ -30,7 +30,7 @@ class TestNote(unittest.TestCase):
 
     def test_repr(self):
         representation = Note(value=3, octave=5).__repr__()
-        self.assertEqual(representation, "<Note: 3, 5, 0.25>")
+        self.assertEqual(representation, "<D#>")
 
     def test_note_equal(self):
         self.assertFalse(Note(3) == Note(15))
@@ -134,6 +134,14 @@ class TestNoteSeq(unittest.TestCase):
         self.assertNotEqual(seq1, NoteSeq(notes + [Note(3, 5)]))
         self.assertRaises(MusiclibError, NoteSeq, [Note(1, 5, 0.5), Rest(2), 1])
         self.assertRaises(MusiclibError, NoteSeq, 1)
+
+    def test_init_empty(self):
+        """Test if NoteSeq without arguments will clean previous values."""
+        seq = NoteSeq()
+        seq.append(Note("C"))
+        seq = NoteSeq()
+        seq.append(Note("D"))
+        self.assertEqual(seq, NoteSeq("D"))
 
     def test_init_string(self):
         seq1 = NoteSeq([Note(0, 4, 0.125), Note(2, 4, 0.125)])
