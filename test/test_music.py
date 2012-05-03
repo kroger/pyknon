@@ -56,11 +56,6 @@ class TestNote(unittest.TestCase):
     def test_inversion(self):
         self.assertEqual(Note(3, 5).inversion(0), Note(9, 4))
 
-    def test_note_list(self):
-        note = Note(value=4, dur=0.25, octave=3, volume=120)
-        result = (4, 3, 0.25, 120)
-        self.assertEqual(note.note_list(), result)
-
     def test_stretch_dur(self):
         n1 = Note(value=4, dur=0.25, octave=3)
         n2 = n1.stretch_dur(2)
@@ -232,22 +227,6 @@ class TestNoteSeq(unittest.TestCase):
         self.assertEqual(seq1.rotate(1), seq2)
         self.assertEqual(seq1.rotate(2), seq3)
         self.assertEqual(seq1.rotate(3), seq1)
-
-    def test_note_list(self):
-        seq = NoteSeq([Note(0, 3, 0.25, 120), Note(4, 3, 0.25, 120),
-                       Note(7, 3, 0.25, 120), Note(0, 3, 0.25, 120)])
-        nlist = [(0, 3, 0.25, 120), (4, 3, 0.25, 120),
-                 (7, 3, 0.25, 120), (0, 3, 0.25, 120)]
-
-        self.assertEqual(seq.note_list(), nlist)
-
-    def test_note_list_rest(self):
-        seq = NoteSeq([Note(0, 3, 0.25, 120), Note(4, 3, 0.25, 120),
-                       Rest(0.25), Note(0, 3, 0.25, 120)])
-        nlist = [(0, 3, 0.25, 120), (4, 3, 0.25, 120),
-                 (-1, 0, 0.25, 0), (0, 3, 0.25, 120)]
-
-        self.assertEqual(seq.note_list(), nlist)
 
     def test_stretch_dur(self):
         seq1 = NoteSeq("C4 D8 E8")

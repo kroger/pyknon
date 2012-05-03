@@ -22,10 +22,6 @@ class Rest(object):
         # The MIDI library uses 1 for quarter note but we use 0.25
         return self.dur * 4
 
-    def note_list(self):
-        # return the same number of arguments as a note, so genmidi can unpack it
-        return -1, 0, self.dur, 0
-
     def stretch_dur(self, factor):
         return Rest(self.dur * factor)
 
@@ -73,9 +69,6 @@ class Note(object):
         """
 
         return self.value + ((self.octave - octave) * 12)
-
-    def note_list(self):
-        return self.value, self.octave, self.dur, self.volume
 
     def transposition(self, index):
         return Note(self.value + index, self.octave, self.dur, self.volume)
@@ -159,9 +152,6 @@ class NoteSeq(collections.MutableSequence):
 
     def __mul__(self, n):
         return NoteSeq(self.items * n)
-
-    def note_list(self):
-        return [x.note_list() for x in self.items]
 
     def retrograde(self):
         return NoteSeq(list(reversed(self.items)))

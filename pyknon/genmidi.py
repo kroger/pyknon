@@ -1,5 +1,5 @@
 from pyknon.MidiFile import MIDIFile
-from pyknon import music
+from pyknon.music import Note
 
 
 class MidiError(Exception):
@@ -25,15 +25,10 @@ class Midi(object):
         if track + 1 > self.number_tracks:
             raise MidiError("You are trying to use more tracks than we have.")
 
-        for note, octave, dur, volume in noteseq.note_list():
-            # The MIDI library uses 1 for quarter note but we use 0.25
-            midi_dur = dur * 4
-            if note == -1:
-                # just skip the rest, the next note will start on the right time
-                pass
-            else:
-                self.midi_data.addNote(track, 0, note + (12 * octave), time, midi_dur, volume)
-            time += midi_dur
+        for note in noteseq:
+            if isinstance(note, Note):
+                self.midi_data.addNote(track, 0, note.midi_number, time, note.midi_dur, note.volume)
+            time += note.midi_dur
 
     def write(self, filename):
         if isinstance(filename, str):
