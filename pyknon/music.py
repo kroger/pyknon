@@ -17,6 +17,11 @@ class Rest(object):
     def __eq__(self, other):
         return self.dur == other.dur
 
+    @property
+    def midi_dur(self):
+        # The MIDI library uses 1 for quarter note but we use 0.25
+        return self.dur * 4
+
     def note_list(self):
         # return the same number of arguments as a note, so genmidi can unpack it
         return -1, 0, self.dur, 0
@@ -54,6 +59,11 @@ class Note(object):
     @property
     def midi_number(self):
         return self.value + (self.octave * 12)
+
+    @property
+    def midi_dur(self):
+        # The MIDI library uses 1 for quarter note but we use 0.25
+        return self.dur * 4
 
     def __note_octave(self, octave):
         """Return a note value in terms of a given octave octave
