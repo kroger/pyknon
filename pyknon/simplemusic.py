@@ -43,6 +43,17 @@ def transposition_startswith(notes, start):
     return transposition(notes, start - notes[0])
 
 
+def is_related_by_transposition(notes1, notes2):
+    """Check if two groups of notes are related by transposition.
+
+    We use brute force here; the best way is to check for the normal
+    or prime forms.
+    """
+    rotations = rotate_set(sorted(notes2))
+    transpositions = [transposition(sorted(notes1), n) for n in range(0, 12)]
+    return any(True for rotation in rotations if rotation in transpositions)
+
+
 def inversion(notes, index=0):
     """Invert a set of notes though an inversion index.
 

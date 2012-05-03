@@ -46,6 +46,12 @@ class TestSimplemusic(unittest.TestCase):
         n2 = [6, 10, 2, 1]
         self.assertEqual(music.transposition(n1, 3), n2)
 
+    def test_is_related_by_transposition(self):
+        self.assertTrue(music.is_related_by_transposition([0, 4, 7], [1, 5, 8]))
+        self.assertTrue(music.is_related_by_transposition([0, 7, 4], [5, 8, 1]))
+        self.assertTrue(music.is_related_by_transposition([4, 0, 7], [5, 1, 8]))
+        self.assertFalse(music.is_related_by_transposition([4, 0, 7], [0, 3, 7]))
+
     def test_inversion(self):
         n1 = [0, 4, 7]
         n2 = [0, 8, 5]
