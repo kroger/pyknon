@@ -56,6 +56,22 @@ class TestNote(unittest.TestCase):
         self.assertEqual(c.transposition(0), Note(value=0))
         self.assertEqual(c.transposition(11), Note(value=11))
 
+    def test_tonal_transposition(self):
+        scale = NoteSeq("C D E F G A B")
+
+        c = Note("C")
+        c_transp_fifth_up = c.tonal_transposition(5, scale)
+        c_transp_second_up = c.tonal_transposition(2, scale)
+
+        a = Note("A")
+        a_transp_fourth_up = a.tonal_transposition(4, scale)
+        a_transp_fifth_up = a.tonal_transposition(5, scale)
+
+        self.assertEqual(c_transp_fifth_up, Note("G"))
+        self.assertEqual(c_transp_second_up, Note("D"))
+        self.assertEqual(a_transp_fourth_up, Note("D''"))
+        self.assertEqual(a_transp_fifth_up, Note("E''"))
+
     def test_harmonize(self):
         c_major_scale = NoteSeq("C D E F G A B")
         c_major = Note("C").harmonize(c_major_scale, 3, 3)
