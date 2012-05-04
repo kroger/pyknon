@@ -12,10 +12,14 @@ class Rest(object):
         self.dur = dur
 
     def __repr__(self):
-        return "<R {0}>".format(self.dur)
+        return "<R: {0}>".format(self.dur)
 
     def __eq__(self, other):
         return self.dur == other.dur
+
+    @property
+    def verbose(self):
+        return "<Rest: {0}>".format(self.dur)
 
     @property
     def midi_dur(self):
@@ -44,8 +48,11 @@ class Note(object):
         return self.midi_number - other.midi_number
 
     def __repr__(self):
-        #return "<Note: {0}, {1}, {2}>".format(self.value, self.octave, self.dur)
         return "<{0}>".format(self.name)
+
+    @property
+    def verbose(self):
+        return "<Note: {0}, {1}, {2}>".format(self.value, self.octave, self.dur)
 
     @property
     def name(self):
@@ -152,6 +159,11 @@ class NoteSeq(collections.MutableSequence):
 
     def __mul__(self, n):
         return NoteSeq(self.items * n)
+
+    @property
+    def verbose(self):
+        string = ", ".join([note.verbose for note in self.items])
+        return "<NoteSeq: [{0}]>".format(string)
 
     def retrograde(self):
         return NoteSeq(list(reversed(self.items)))

@@ -12,7 +12,11 @@ class TestRest(unittest.TestCase):
 
     def test_repr(self):
         representation = Rest(0.5).__repr__()
-        self.assertEqual(representation, "<R 0.5>")
+        self.assertEqual(representation, "<R: 0.5>")
+
+    def test_verbose(self):
+        result = Rest(0.5).verbose
+        self.assertEqual(result, "<Rest: 0.5>")
 
 
 
@@ -31,6 +35,11 @@ class TestNote(unittest.TestCase):
     def test_repr(self):
         representation = Note(value=3, octave=5).__repr__()
         self.assertEqual(representation, "<D#>")
+
+    def test_verbose(self):
+        result = Note("Eb2''").verbose
+        self.assertEqual(result, "<Note: 3, 6, 0.5>")
+
 
     def test_note_equal(self):
         self.assertFalse(Note(3) == Note(15))
@@ -116,6 +125,15 @@ class TestNoteSeqOperations(unittest.TestCase):
         self.assertEqual(seq1[0], Note("C"))
         self.assertEqual(seq1[1:], seq2)
 
+    def test_repr(self):
+        representation = NoteSeq("C D E").__repr__()
+        self.assertEqual(representation, "<Seq: [<C>, <D>, <E>]>")
+
+    def test_verbose(self):
+        result = NoteSeq("C2 D E").verbose
+        self.assertEqual(result, "<NoteSeq: [<Note: 0, 5, 0.5>, <Note: 2, 5, 0.5>, <Note: 4, 5, 0.5>]>")
+
+
 
 
 class TestNoteSeq(unittest.TestCase):
@@ -161,7 +179,7 @@ class TestNoteSeq(unittest.TestCase):
         self.assertEqual(seq3[0].dur, 0.25)
         self.assertEqual(seq3[1].dur, 0.25)
         self.assertEqual(seq3[2].dur, 0.25)
-        
+
     def test_transposition(self):
         seq = NoteSeq("C E G")
         self.assertEqual(seq.transposition(3), NoteSeq("Eb G Bb"))
