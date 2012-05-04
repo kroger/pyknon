@@ -56,6 +56,11 @@ class TestNote(unittest.TestCase):
         self.assertEqual(c.transposition(0), Note(value=0))
         self.assertEqual(c.transposition(11), Note(value=11))
 
+    def test_harmonize(self):
+        c_major_scale = NoteSeq("C D E F G A B")
+        c_major = Note("C").harmonize(c_major_scale, 3, 3)
+        self.assertEqual(NoteSeq(c_major), NoteSeq("C E G"))
+
     def test_transposition_octave(self):
         e = Note(value=4, dur=0.25, octave=7)
         self.assertNotEqual(e.transposition(2), Note(value=6))
@@ -231,11 +236,17 @@ class TestNoteSeq(unittest.TestCase):
         seq2 = NoteSeq("C Ab, F,")
         self.assertEqual(seq1.inversion_startswith(0), seq2)
 
-
     def test_inversion_startswith_octave(self):
         seq1 = NoteSeq("G Ab B,")
         seq2 = NoteSeq("E Eb C''")
         self.assertEqual(seq1.inversion_startswith(Note(4, 5)), seq2)
+
+    def test_harmonize(self):
+        c_major = NoteSeq("C D E F G A B")
+        c_major_harmonized = [NoteSeq("C E G"), NoteSeq("D F A"), NoteSeq("E G B"),
+                              NoteSeq("F A C''"), NoteSeq("G B D''"), NoteSeq("A C'' E"),
+                              NoteSeq("B D'' F''")]
+        self.assertEqual(c_major.harmonize(), c_major_harmonized)
 
     def test_rotate(self):
         seq1 = NoteSeq("C E G")

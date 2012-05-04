@@ -80,6 +80,19 @@ class Note(object):
     def transposition(self, index):
         return Note(self.value + index, self.octave, self.dur, self.volume)
 
+    ## FIXME: transpose down
+    def tonal_transposition(self, index, scale):
+        pos = index + scale.index(self) - 1
+        octave, rest = divmod(pos, 7)
+        note = copy.copy(scale[pos % len(scale)])
+        note.octave += octave
+        return note
+
+    def harmonize(self, scale, interval=3, size=3):
+        i = (interval - 1)
+        points = range(1, size*i, i)
+        return [self.tonal_transposition(x, scale) for x in points]
+
     def inversion(self, index=0, initial_octave=None):
         value = self.__note_octave(initial_octave) if initial_octave else self.value
         octv = initial_octave if initial_octave else self.octave
@@ -191,6 +204,9 @@ class NoteSeq(collections.MutableSequence):
         note = self._note_or_integer(note_start)
         inv = self.transposition_startswith(Note(0, note.octave)).inversion()
         return inv.transposition_startswith(note)
+
+    def harmonize(self, interval=3, size=3):
+        return [NoteSeq(note.harmonize(self, interval, size)) for note in self]
 
     def rotate(self, n=1):
         modn = n % len(self)
