@@ -74,8 +74,12 @@ class TestNote(unittest.TestCase):
 
     def test_harmonize(self):
         c_major_scale = NoteSeq("C D E F G A B")
+        scale_as_list = [Note("C"), Note("D"), Note("E"), Note("F"), Note("G"), Note("A"), Note("B")]
         c_major = Note("C").harmonize(c_major_scale, 3, 3)
+        a_minor = Note("A").harmonize(scale_as_list, 3, 4)
         self.assertEqual(NoteSeq(c_major), NoteSeq("C E G"))
+        self.assertEqual(NoteSeq(a_minor), NoteSeq("A C'' E G"))
+
 
     def test_transposition_octave(self):
         e = Note(value=4, dur=0.25, octave=7)
