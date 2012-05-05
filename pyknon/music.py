@@ -90,8 +90,8 @@ class Note(object):
 
     def harmonize(self, scale, interval=3, size=3):
         i = (interval - 1)
-        points = range(1, size*i, i)
-        return [self.tonal_transposition(x, scale) for x in points]
+        indices = range(1, size*i, i)
+        return [self.tonal_transposition(x, scale) for x in indices]
 
     def inversion(self, index=0, initial_octave=None):
         value = self.__note_octave(initial_octave) if initial_octave else self.value
