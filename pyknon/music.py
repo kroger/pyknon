@@ -188,11 +188,11 @@ class NoteSeq(collections.MutableSequence):
         return NoteSeq([x.transposition(index) if isinstance(x, Note) else x
                         for x in self.items])
 
-    def _note_or_integer(self, item):
-        return Note(item) if isinstance(item, int) else item
+    def _make_note(self, item):
+        return Note(item) if (isinstance(item, int) or isinstance(item, str)) else item
 
     def transposition_startswith(self, note_start):
-        note = self._note_or_integer(note_start)
+        note = self._make_note(note_start)
         return self.transposition(note - self.items[0])
 
     def inversion(self, index=0):
@@ -201,7 +201,7 @@ class NoteSeq(collections.MutableSequence):
                         else x for x in self.items])
 
     def inversion_startswith(self, note_start):
-        note = self._note_or_integer(note_start)
+        note = self._make_note(note_start)
         inv = self.transposition_startswith(Note(0, note.octave)).inversion()
         return inv.transposition_startswith(note)
 

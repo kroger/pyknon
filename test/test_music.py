@@ -226,6 +226,12 @@ class TestNoteSeq(unittest.TestCase):
         seq2 = NoteSeq("D E F#")
         self.assertEqual(seq1.transposition_startswith(2), seq2)
 
+    def test_transposition_startswith_string(self):
+        seq1 = NoteSeq("C D E")
+        seq2 = NoteSeq("D E F#")
+        self.assertEqual(seq1.transposition_startswith("D"), seq2)
+        
+
     def test_transposition_startswith_rest(self):
         seq1 = NoteSeq("E G R C#")
         seq2 = NoteSeq([Note(2, 5), Note(5, 5), Rest(), Note(11, 4)])
@@ -260,6 +266,11 @@ class TestNoteSeq(unittest.TestCase):
         seq1 = NoteSeq("G Ab B,")
         seq2 = NoteSeq("E Eb C''")
         self.assertEqual(seq1.inversion_startswith(Note(4, 5)), seq2)
+
+    def test_inversion_startswith_string(self):
+        seq1 = NoteSeq("C E G")
+        seq2 = NoteSeq("C Ab, F,")
+        self.assertEqual(seq1.inversion_startswith("C"), seq2)
 
     def test_harmonize(self):
         c_major = NoteSeq("C D E F G A B")
