@@ -233,5 +233,5 @@ class NoteSeq(collections.MutableSequence):
         return result
 
     # Aliases
-    transp_startswith = transposition_startswith
-    inv_startswith = inversion_startswith
+    transp = transposition_startswith
+    inv = inversion_startswith
