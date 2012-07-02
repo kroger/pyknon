@@ -16,7 +16,6 @@ def mod12(n):
 
 
 def interval(x, y):
-    """Return the numeric interval between two notes."""
     return mod12(x - y)
 
 
@@ -34,37 +33,24 @@ def all_intervals(notes):
 
 
 def transposition(notes, index):
-    """Transpose a set of notes by a numerical index."""
     return [mod12(n + index) for n in notes]
 
 
 def transposition_startswith(notes, start):
-    """Transpose a set of notes so it begins with `start` note."""
     return transposition(notes, start - notes[0])
 
 
 def is_related_by_transposition(notes1, notes2):
-    """Check if two groups of notes are related by transposition.
-
-    We use brute force here; the best way is to check for the normal
-    or prime forms.
-    """
     rotations = rotate_set(sorted(notes2))
     transpositions = [transposition(sorted(notes1), n) for n in range(0, 12)]
     return any(True for rotation in rotations if rotation in transpositions)
 
 
 def inversion(notes, index=0):
-    """Invert a set of notes though an inversion index.
-
-    The inversion index is not very musical. the function
-    :func:`inversion_startswith` is probably more useful.
-    """
     return [mod12(index - n) for n in notes]
 
 
 def inversion_startswith(notes, start):
-    """Invert a set of notes so it begins with `start` note."""
     transp = transposition_startswith(notes, 0)
     return transposition_startswith(inversion(transp), start)
 
@@ -79,7 +65,6 @@ def rotate(item, n=1):
 
 
 def rotate_set(notes):
-    """Return all rotations of a collection of notes."""
     return [rotate(notes, x) for x in range(0, len(notes))]
 
 
@@ -115,7 +100,6 @@ def name_to_number(note_string):
 
 
 def name_to_diatonic(note_string):
-    """Return a number from 0 to 6 for the note name without the accidental."""
     notes = "C D E F G A B".split()
     name = note_string[0:1].upper()
     return notes.index(name)
@@ -126,11 +110,6 @@ def note_duration(note_value, unity, tempo):
 
 
 def dotted_duration(duration, dots):
-    """
-    Sn = a(1 - r^n)/1 - r where a is the first term, r is the common
-    ration (1/2 in our case) and n is the number of terms.
-
-    """
     ratio = Fraction(1, 2)
     return duration * (1 - ratio ** (dots + 1)) / ratio
 
