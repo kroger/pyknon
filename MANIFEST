@@ -4,8 +4,15 @@ setup.py
 pyknon/MidiFile.py
 pyknon/__init__.py
 pyknon/genmidi.py
-pyknon/musiclib.py
+pyknon/music.py
 pyknon/notation.py
 pyknon/pc_sets.py
+pyknon/pcset.py
 pyknon/plot.py
 pyknon/simplemusic.py
+test/test_genmidi.py
+test/test_midi.py
+test/test_music.py
+test/test_notation.py
+test/test_pcset.py
+test/test_simplemusic.py
