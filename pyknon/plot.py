@@ -58,7 +58,6 @@ def canvas_notes(notes_list, width=400):
 
 def view(notes_list, width=400):
     canvas = canvas_notes(notes_list, width)
-    mainloop()
 
 
 def notes_ps(notes_list, filename, width=400):
