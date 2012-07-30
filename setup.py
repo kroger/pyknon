@@ -10,5 +10,5 @@ setup(
     license='MIT',
     author='Pedro Kroger',
     author_email='kroger@pedrokroger.net',
-    long_description=open('README').read(),
+    long_description=open('README.md').read(),
 )
