@@ -1,5 +1,4 @@
-Introduction
-============
+# Introduction
 
 Pyknon is a simple music library for Python hackers. With Pyknon you
 can generate Midi files quickly and reason about musical
@@ -7,8 +6,7 @@ proprieties.
 
 Pyknon works with Python 2.7 and 3.2.
 
-Usage
-=====
+# Usage
 
 Pyknon is very simple to use, here's a basic example to create 4 notes
 and save into a MIDI file::
@@ -23,8 +21,7 @@ and save into a MIDI file::
 
 See the documentation for more details.
 
-License
-=======
+# License
 
 This library is released under a MIT license. See the LICENSE file for
 more details.
