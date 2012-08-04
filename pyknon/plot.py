@@ -36,14 +36,14 @@ def plot_numbers(canvas, points):
         canvas.create_text(x, y-10, text=str(n), font=("Helvetica Bold", 14))
 
 
-def plot_notes(notes, canvas, points, color="black"):
+def plot_notes(notes, canvas, points, color="black", dash=None):
     p = points
     for n1, n2 in zip(notes, notes[1:]):
         p = points[n1] + points[n2]
-        canvas.create_line(*p, width=3, fill=color)
+        canvas.create_line(*p, width=3, fill=color, dash=dash)
 
 
-def canvas_notes(notes_list, width=400):
+def canvas_notes(notes_list, width=400, is_black_and_white=False):
     canvas = Tk.Canvas(width=width, height=width)
     canvas.pack(side=Tk.TOP)
     radius = (width / 2) - MARGIN
@@ -51,8 +51,12 @@ def canvas_notes(notes_list, width=400):
     plot_points(canvas, points)
     plot_numbers(canvas, points)
     plot_circle(canvas, width - MARGIN, points)
-    for notes, color in notes_list:
-        plot_notes(notes, canvas, points, color)
+    if is_black_and_white:
+        for notes, dash in notes_list:
+            plot_notes(notes, canvas, points, dash=dash)
+    else:
+        for notes, color in notes_list:
+            plot_notes(notes, canvas, points, color)
     return canvas
 
 
@@ -60,8 +64,8 @@ def view(notes_list, width=400):
     canvas = canvas_notes(notes_list, width)
 
 
-def notes_ps(notes_list, filename, width=400):
-    canvas = canvas_notes(notes_list, width)
+def notes_ps(notes_list, filename, width=400, is_black_and_white=False):
+    canvas = canvas_notes(notes_list, width, is_black_and_white=is_black_and_white)
     L, T, R, B = canvas.bbox(Tk.ALL)
     canvas.postscript(file=filename, height=B, width=R,
                       pageheight=B, pagewidth=R, x=0, y=0)
@@ -70,3 +74,8 @@ def notes_ps(notes_list, filename, width=400):
 def plot2(notes1, notes2, filename):
     notes_list = [(notes1, "black"), (notes2, "red")]
     notes_ps(notes_list, filename)
+
+
+def plot2_bw(notes1, notes2, filename):
+    notes_list = [(notes1, None), (notes2, (4, 4))]
+    notes_ps(notes_list, filename, is_black_and_white=True)
