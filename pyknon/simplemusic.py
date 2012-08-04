@@ -10,6 +10,9 @@ from __future__ import division
 from itertools import combinations, chain
 from fractions import Fraction
 
+class SimpleMusicError(Exception):
+    pass
+
 
 def mod12(n):
     return n % 12
@@ -125,7 +128,10 @@ def get_quality(diatonic_interval, chromatic_interval):
         quality_map = ['Diminished', 'Minor', 'Major', 'Augmented']
 
     index_map = [-1, 0, 2, 4, 6, 7, 9]
-    return quality_map[chromatic_interval - index_map[diatonic_interval]]
+    try:
+        return quality_map[chromatic_interval - index_map[diatonic_interval]]
+    except IndexError:
+        raise SimpleMusicError("Sorry, I can't deal with this interval :-(")
 
 
 def interval_name(note1, note2):
