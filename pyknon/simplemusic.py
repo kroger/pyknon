@@ -9,6 +9,7 @@ generate actual music you should use the music module.
 from __future__ import division
 from itertools import combinations, chain
 from fractions import Fraction
+from numpy import isnan
 
 class SimpleMusicError(Exception):
     pass
@@ -77,8 +78,16 @@ def retrograde(notes):
 
 def note_name(number):
     notes = "C C# D D# E F F# G G# A A# B".split()
-    return notes[mod12(number)]
-
+    rest = "R"
+    if isnan(number):
+        number = rest
+    elif number < (-2000000000.):
+        number = rest
+    else:
+        number = notes[mod12(number)]
+    return number
+    #return notes[mod12(number)]
+    
 
 def notes_names(notes):
     return [note_name(x) for x in notes]
