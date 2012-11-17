@@ -22,6 +22,11 @@ class TestMidi(unittest.TestCase):
         midi.seq_notes(NoteSeq("C D"), track=0)
         midi.seq_notes(NoteSeq("D E"), track=1)
 
+    def test_seq_chords(self):
+        chords = [NoteSeq("C E G"), NoteSeq("G B D")]
+        midi = Midi()
+        midi.seq_chords(chords)
+        
 
 class TestWriteMidi(unittest.TestCase):
     def test_write_midifile(self):
