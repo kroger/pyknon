@@ -2,7 +2,7 @@ import unittest
 import tempfile
 from pyknon.MidiFile import MIDIFile
 from pyknon.genmidi import Midi, MidiError
-from pyknon.music import NoteSeq, Note
+from pyknon.music import NoteSeq, Note, Rest
 
 
 class TestMidi(unittest.TestCase):
@@ -24,6 +24,11 @@ class TestMidi(unittest.TestCase):
 
     def test_seq_chords(self):
         chords = [NoteSeq("C E G"), NoteSeq("G B D")]
+        midi = Midi()
+        midi.seq_chords(chords)
+        
+    def test_seq_chords_with_rest(self):
+        chords = [Rest(), NoteSeq("G B D")]
         midi = Midi()
         midi.seq_chords(chords)
         

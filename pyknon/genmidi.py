@@ -1,5 +1,5 @@
 from pyknon.MidiFile import MIDIFile
-from pyknon.music import Note, NoteSeq
+from pyknon.music import Note, NoteSeq, Rest
 
 
 class MidiError(Exception):
@@ -25,13 +25,15 @@ class Midi(object):
         if track + 1 > self.number_tracks:
             raise MidiError("You are trying to use more tracks than we have.")
 
-        for seq in seqlist:
-            if isinstance(seq, NoteSeq):
-                volume = seq[0].volume
-                dur = seq[0].midi_dur
-                for note in seq:
+        for item in seqlist:
+            if isinstance(item, NoteSeq):
+                volume = item[0].volume
+                dur = item[0].midi_dur
+                for note in item:
                     self.midi_data.addNote(track, 0, note.midi_number, time, dur, volume)
                 time += dur
+            elif isinstance(item, Rest):
+                time += item.midi_dur
             else:
                 raise MidiError("The input should be a list of NoteSeq but yours is a {0}: {1}".format(type(seqlist), seqlist))
         return time
