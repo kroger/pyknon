@@ -2,3 +2,4 @@
 htmlcov
 .tox
 _build/
+.cache
