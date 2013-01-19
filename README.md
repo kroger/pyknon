@@ -2,7 +2,7 @@
 
 Pyknon is a simple music library for Python hackers. With Pyknon you
 can generate Midi files quickly and reason about musical
-proprieties.
+properties.
 
 Pyknon works with Python 2.7 and 3.2.
 
