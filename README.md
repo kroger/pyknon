@@ -21,6 +21,10 @@ and save into a MIDI file::
 
 See the documentation for more details.
 
+# Documentation
+
+Pyknon needs better documentation. Meanwhile you can download [this free chapter](https://s3.amazonaws.com/musicforgeeksandnerds.com/Pyknon+from+Music+for+Geeks+and+Nerds.pdf) from [Music for Geeks and Nerds](http://musicforgeeksandnerds.com) that explains how to use Pyknon.
+
 # License
 
 This library is released under a MIT license. See the LICENSE file for
