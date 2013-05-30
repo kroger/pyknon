@@ -106,6 +106,34 @@ class TestNoteSeqOperations(unittest.TestCase):
         seq3 = NoteSeq("C D E F G A")
         self.assertEqual(seq1 + seq2, seq3)
 
+    def test_sum_with_note(self):
+        #  Test adding in regular order
+        note1 = Note("G1")
+        seq = NoteSeq("C2 D8 E4")
+        expected = NoteSeq("C2 D8 E4 G1")
+        self.assertEqual(seq + note1, expected)
+
+
+        #  Test reverse adding, note first
+        seq = NoteSeq("C2 D8 E4")
+        expected = NoteSeq("G1 C2 D8 E4")
+        self.assertEqual(note1 + seq, expected)
+
+    def test_sum_with_rest(self):
+        #  Test adding in regular order
+        rest1 = Rest(1)
+        seq = NoteSeq("C2 D8 E4")
+        expected = NoteSeq("C2 D8 E4 R1")
+        self.assertEqual(seq + rest1, expected)
+
+
+        #  Test reverse adding, rest first
+        seq = NoteSeq("C2 D8 E4")
+        expected = NoteSeq("R1 C2 D8 E4")
+        self.assertEqual(rest1 + seq, expected)
+
+
+
     def test_multiplication(self):
         seq1 = NoteSeq("C4 D8 E8")
         seq2 = NoteSeq("C4 D8 E8 C4 D8 E8 C4 D8 E8")
