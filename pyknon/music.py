@@ -168,7 +168,22 @@ class NoteSeq(collections.MutableSequence):
             return all(x == y for x, y in zip(self.items, other.items))
 
     def __add__(self, other):
-        return NoteSeq(self.items + other.items)
+        if isinstance(other, NoteSeq):
+            return NoteSeq(self.items + other.items)
+
+        elif isinstance(other, Note) or isinstance(other, Rest):
+            return NoteSeq(self.items + [other])
+
+
+    def __radd__(self, other):
+        if isinstance(other, NoteSeq):
+            #  This should never be called because the other NoteSeq should
+            #  handle the concatenation, but it's here for completness sake
+            return NoteSeq(other.items + self.items)
+
+        elif isinstance(other, Note) or isinstance(other, Rest):
+            return NoteSeq([other] + self.items)
+
 
     def __mul__(self, n):
         return NoteSeq(self.items * n)
