@@ -329,8 +329,10 @@ class TestNoteSeq(unittest.TestCase):
         self.assertEqual(seq1.retrograde(), seq2)
 
     def test_intervals(self):
-        seq = NoteSeq("C D E F#")
-        self.assertEqual(seq.intervals(), [2, 2, 2])
+        seq1 = NoteSeq("C D E F#")
+        seq2 = NoteSeq("B' C''")
+        self.assertEqual(seq1.intervals(), [2, 2, 2])
+        self.assertEqual(seq2.intervals(), [1])
 
     def test_stretch_inverval(self):
         seq1 = NoteSeq("C D E")
