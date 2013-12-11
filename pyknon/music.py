@@ -233,8 +233,8 @@ class NoteSeq(collections.MutableSequence):
 
     ## TODO: gives an error with rests
     def intervals(self):
-        v1 = [x.value for x in self]
-        v2 = [x.value for x in self.rotate()]
+        v1 = self[:]
+        v2 = self.rotate()
 
         return [y - x for x, y in zip(v1, v2[:-1])]
 

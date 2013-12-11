@@ -5,3 +5,4 @@ htmlcov
 .tox
 _build/
 .cache
+build/
