@@ -334,10 +334,10 @@ class TestNoteSeq(unittest.TestCase):
         self.assertEqual(seq1.intervals(), [2, 2, 2])
         self.assertEqual(seq2.intervals(), [1])
 
-    def test_stretch_inverval(self):
+    def test_stretch_interval(self):
         seq1 = NoteSeq("C D E")
         seq2 = NoteSeq("C E G#")
         seq3 = NoteSeq("A Bb F#")
         seq4 = NoteSeq("A C#'' C''")
-        self.assertEqual(seq1.stretch_inverval(2), seq2)
-        self.assertEqual(seq3.stretch_inverval(3), seq4)
+        self.assertEqual(seq1.stretch_interval(2), seq2)
+        self.assertEqual(seq3.stretch_interval(3), seq4)

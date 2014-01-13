@@ -238,7 +238,7 @@ class NoteSeq(collections.MutableSequence):
 
         return [y - x for x, y in zip(v1, v2[:-1])]
 
-    def stretch_inverval(self, factor):
+    def stretch_interval(self, factor):
         intervals = [x + factor for x in self.intervals()]
         note = copy.copy(self[0])
         result = NoteSeq([note])
