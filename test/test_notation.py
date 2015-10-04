@@ -52,3 +52,8 @@ class TestNotation(unittest.TestCase):
         list_notes2 = [(11, 5, 0.25, 120), (3, 4, 0.125, 120), (5, 4, 0.0625, 120)]
         self.assertEqual(notes1, list_notes1)
         self.assertEqual(notes2, list_notes2)
+
+    def test_parse_notes_dur_dot(self):
+        notes1 = notation.parse_notes(["C4.''", "D4..", "E8."])
+        list_notes1 = [(0, 6, 0.375, 120), (2, 6, 0.4375, 120), (4, 6, 0.1875, 120)]
+        self.assertEqual(notes1, list_notes1)

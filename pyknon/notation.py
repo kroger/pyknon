@@ -52,11 +52,12 @@ def parse_note(note, volume=120, prev_octave=5, prev_dur=0.25):
     else:
         pitch_number = note_names.index(pitch.lower())
         acc_number = parse_accidental(acc)
-        note_number =  (pitch_number + acc_number) % 12
+        note_number = (pitch_number + acc_number) % 12
         return note_number, octave, duration, volume
 
 
 def parse_notes(notes, volume=120):
+    # (number, octave, dur, volume)
     prev_oct = 5       # default octave
     prev_dur = 0.25    # default duration is 1/4, but it's 1 in the MIDI library
 
