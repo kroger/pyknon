@@ -16,21 +16,23 @@ class Midi(object):
         self.midi_data = MIDIFile(number_tracks)
 
         for track in range(number_tracks):
+            channel = track
             self.midi_data.addTrackName(track, 0, "Track {0}".format(track))
             self.midi_data.addTempo(track, 0, tempo)
             instr = instrument[track] if isinstance(instrument, list) else instrument
-            self.midi_data.addProgramChange(track, 0, 0, instr)
+            self.midi_data.addProgramChange(track, channel, 0, instr)
 
     def seq_chords(self, seqlist, track=0, time=0):
         if track + 1 > self.number_tracks:
             raise MidiError("You are trying to use more tracks than we have.")
 
+        channel = track
         for item in seqlist:
             if isinstance(item, NoteSeq):
                 volume = item[0].volume
                 dur = item[0].midi_dur
                 for note in item:
-                    self.midi_data.addNote(track, 0, note.midi_number, time, dur, volume)
+                    self.midi_data.addNote(track, channel, note.midi_number, time, dur, volume)
                 time += dur
             elif isinstance(item, Rest):
                 time += item.midi_dur
@@ -42,9 +44,10 @@ class Midi(object):
         if track + 1 > self.number_tracks:
             raise MidiError("You are trying to use more tracks than we have.")
 
+        channel = track
         for note in noteseq:
             if isinstance(note, Note):
-                self.midi_data.addNote(track, 0, note.midi_number, time, note.midi_dur, note.volume)
+                self.midi_data.addNote(track, channel, note.midi_number, time, note.midi_dur, note.volume)
             else:
                 # we ignore the rests
                 pass
