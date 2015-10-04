@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='pyknon',
-    version='1.1',
+    version='1.2',
     packages=['pyknon',],
     url="http://kroger.github.com/pyknon",
     license='MIT',
