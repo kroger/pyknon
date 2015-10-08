@@ -10,6 +10,7 @@ from __future__ import division
 from itertools import combinations, chain
 from fractions import Fraction
 
+
 class SimpleMusicError(Exception):
     pass
 
@@ -27,7 +28,7 @@ def interval_class(x, y):
 
 
 def intervals(notes):
-    return [interval_class(y, x) for x,y in zip(notes, rotate(notes)[:-1])]
+    return [interval_class(y, x) for x, y in zip(notes, rotate(notes)[:-1])]
 
 
 def all_intervals(notes):
@@ -62,9 +63,9 @@ def inversion_first_note(notes):
     return inversion(notes, 2 * notes[0])
 
 
-def rotate(item, n=1):
-    modn = n % len(item)
-    return item[modn:] + item[0:modn]
+def rotate(notes, n=1):
+    modn = n % len(notes)
+    return notes[modn:] + notes[0:modn]
 
 
 def rotate_set(notes):
