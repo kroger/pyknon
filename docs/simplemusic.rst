@@ -9,14 +9,14 @@ Simplemusic
 
 .. autofunction:: simplemusic.mod12
 
-    Returns `n % 12`.
+    Return `n % 12`.
 
 >>> simplemusic.mod12(13)
 1
 
 .. autofunction:: simplemusic.interval
 
-    Returns the numeric interval between two notes. Exchanging notes gives the complement adding up to 12.
+    Return the numeric interval between two notes. Exchanging notes gives the complement adding up to 12.
 
 >>> simplemusic.interval(2, 0)
 2
@@ -25,7 +25,7 @@ Simplemusic
 
 .. autofunction:: simplemusic.transposition
 
-    Transposes a set of notes by a number of half-steps. Notes are limited to values 0 to 11.
+    Transpose a set of notes by a number of half-steps. Notes are limited to values 0 to 11.
 
 >>> notes = [0, 2, 4, 6, 8, 10]
 [0, 2, 4, 6, 8, 10]
@@ -35,7 +35,7 @@ Simplemusic
 
 .. autofunction:: simplemusic.transposition_startswith
 
-    Transposes a set of notes so it begins with `start` note.
+    Transpose a set of notes so it begins with `start` note.
 
 >>> simplemusic.transposition_startswith([0, 1, 2, 3], 3)
 [3, 4, 5, 6]
@@ -45,7 +45,7 @@ Simplemusic
 
 .. autofunction:: simplemusic.is_related_by_transposition
 
-    Returns True if a `notes1` can be transposed to match `notes2`.
+    Return True if a `notes1` can be transposed to match `notes2`.
 
     We use brute force here; the best way is to check for the normal or prime forms.
 
@@ -60,7 +60,7 @@ False
 
 .. autofunction:: simplemusic.inversion
 
-    Inverts a set of notes using `index` as the pivot point. Notes originally above `index` will be below it (wrapping at 12), and vice versa.
+    Invert a set of notes using `index` as the pivot point. Notes originally above `index` will be below it (wrapping at 12), and vice versa.
 
 >>> simplemusic.inversion([0, 1, 2, 3])
 [0, 11, 10, 9]
@@ -78,14 +78,14 @@ False
 
 .. autofunction:: simplemusic.inversion_startswith
 
-    Inverts and transposes a set of notes so it begins with `start` note.
+    Invert and transpose a set of notes so it begins with `start` note.
 
 >>> simplemusic.inversion_startswith([0, 4, 7], 2)
 [2, 10, 7]
 
 .. autofunction:: simplemusic.rotate
 
-    Returns `sequence` with the contents rotated by `n` positions.
+    Return `notes` with the contents rotated by `n` positions.
 
 >>> simplemusic.rotate([1,2,3,4])
 [2, 3, 4, 1]
@@ -94,7 +94,7 @@ False
 
 .. autofunction:: simplemusic.rotate_set
 
-    Returns a list of all rotations of a collection.
+    Return a list of all rotations of a collection.
 
 >>> simplemusic.rotate_set([1, 2, 3, 4])
 [[1, 2, 3, 4], [2, 3, 1, 4], [3, 4, 1, 2], [4, 1, 2, 3]]
