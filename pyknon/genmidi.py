@@ -55,6 +55,7 @@ class Midi(object):
 
         for note in noteseq:
             if isinstance(note, Note):
+                #print note.midi_number, track
                 self.midi_data.addNote(track, _channel, note.midi_number, time, note.midi_dur, note.volume)
             else:
                 # we ignore the rests
@@ -62,6 +63,9 @@ class Midi(object):
             time += note.midi_dur
 
         return time
+
+    def change_tuning(self, track, tunings, real_time=False, tuning_program=0):
+        self.midi_data.changeNoteTuning(track, tunings, realTime=real_time, tuningProgam=tuning_program)
 
     def write(self, filename):
         if isinstance(filename, str):
