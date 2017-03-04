@@ -31,11 +31,28 @@ class Rest(object):
 
 
 class Note(object):
+    """class representing a musical note
+       the 12 musical notes in one octave are represented as one of 
+         C C# D D# E F F# G G# A A# B
+       we stores this as a number from 0-11 (inclusive)
+       we also store the octave number
+       as well as the duration the note should play for 
+       and the volume it should play at
+    """
     def __init__(self, value=0, octave=5, dur=0.25, volume=100):
+        # if `value` is a string
         if isinstance(value, str):
+            # attempt to parse the musical notation
             self.value, self.octave, self.dur, self.volume = notation.parse_note(value)
         else:
-            offset, val = divmod(value, 12)
+            # otherwise build the Note object manually
+            # we accept any number for the value
+            # but break it up into the octave offset and the note value
+            # the note value is the given value mod 12
+            # the octave offset is floor( value / 12 ) + the given octave
+            # this means we can pass in value=18, octave=0 to get note #6 in octave #1
+            # and we can also pass in value=30, octave=4 to get note #6 in octave #6
+            offset, val = divmod(value, 12) # divmod(x,y) returns (x//y, x%y)
             self.value = val
             self.octave = octave + offset
             self.dur = dur
@@ -61,6 +78,9 @@ class Note(object):
 
     @property
     def midi_number(self):
+        """MIDI represents every note as a single number
+           octave #0 contains notes 0-11, octave #1 contains notes 12-23, etc.
+        """
         return self.value + (self.octave * 12)
 
     @property
@@ -69,7 +89,7 @@ class Note(object):
         return self.dur * 4
 
     def __note_octave(self, octave):
-        """Return a note value in terms of a given octave octave
+        """Return a note value in terms of a given octave
 
            n = Note(11, 4)
            __note_octave(n, 5) = -1
@@ -78,22 +98,41 @@ class Note(object):
         return self.value + ((self.octave - octave) * 12)
 
     def transposition(self, index):
+        """move the note up by `index` number of semitones
+           if `index` is negative
+        """
         return Note(self.value + index, self.octave, self.dur, self.volume)
 
     ## FIXME: transpose down
     def tonal_transposition(self, index, scale):
-        pos = index + scale.index(self) - 1
-        octave, rest = divmod(pos, 7)
-        note = copy.copy(scale[pos % len(scale)])
+        """using the given `scale` (sequence of notes)
+           move the note to the `index`-th note
+           index=1 means no change
+        """
+        pos = index + scale.index(self) - 1        # get note position in scale
+        octave, rest = divmod(pos, 7)              # get octave offset (ignore `rest`)
+        note = copy.copy(scale[pos % len(scale)])  # get the note object from the scale and clone it
         note.octave += octave
         return note
 
     def harmonize(self, scale, interval=3, size=3):
+        """generate a sequence of `size` number of notes
+           each pair of notes in the produced sequence are 
+                (`interval`-1) notes apart in the given `scale`
+        """
         i = (interval - 1)
         indices = range(1, size*i, i)
         return [self.tonal_transposition(x, scale) for x in indices]
 
     def inversion(self, index=0, initial_octave=None):
+        """invert the note around the given `index` in a given `initial_octave`
+           if the current note's value is x semitones above `index`, 
+                the resulting note's value will be x semitones below `index`
+                and if the current note's value is x semitones below `index`
+                the resulting note's value will be x semitones above `index`
+           the same relationship will be true between the current note's octave, 
+                the `initial_octave`, and the resulting note's octave 
+        """
         value = self.__note_octave(initial_octave) if initial_octave else self.value
         octv = initial_octave if initial_octave else self.octave
         note_value = (2 * index) - value
