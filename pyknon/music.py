@@ -143,19 +143,30 @@ class Note(object):
 
 
 class NoteSeq(collections.MutableSequence):
+    """Class representing an arbitrary sequence of Notes and Rests
+    """
     @staticmethod
     def _is_note_or_rest(args):
+        """Returns True if all items in the NoteSeq are either a Note or Rest
+        """
         return all([True if isinstance(x, Note) or isinstance(x, Rest) else False for x in args])
 
     @staticmethod
     def _make_note_or_rest(note_list):
+        # `note_list` takes the form (number, octave, dur, volume)
         if note_list[0] is not None:
             return Note(*note_list)
         else:
+            # if the note number is None, this represents a rest
+            # make a Rest object with the given duration
             return Rest(note_list[2])
 
     @staticmethod
     def _parse_score(filename):
+        """parse a file for a list of notes
+           assume each line is a space-separated sequence of notes
+           return the list of the string representation for each note
+        """
         with open(filename) as score:
             notes = []
             for line in score:
@@ -165,12 +176,18 @@ class NoteSeq(collections.MutableSequence):
     def __init__(self, args=None):
         if isinstance(args, str):
             if args.startswith("file://"):
+                # parse a file for list of notes
                 filename = args.replace("file://", "")
                 note_lists = notation.parse_notes(self._parse_score(filename))
             else:
+                # parse the string assuming it's a space-separated list of notes
                 note_lists = notation.parse_notes(args.split())
+            # notation.parse_notes() returns a list of lists of attributes for a Note/Rest
+            # build the Note or Rest objects from that list
             self.items = [self._make_note_or_rest(x) for x in note_lists]
         elif isinstance(args, collections.Iterable):
+            # if we got a list, tuple, or other iterable object
+            # make sure everything in the iterable is a note or rest
             if self._is_note_or_rest(args):
                 self.items = args
             else:
@@ -188,9 +205,13 @@ class NoteSeq(collections.MutableSequence):
         del self.items[i]
 
     def __getitem__(self, i):
+        # indexing with []
+        # if `i` is an int, look up that item
         if isinstance(i, int):
             return self.items[i]
         else:
+            # `i` is not an int so we assume a slice was requested
+            # get the slice of our Notes/Rests and create a new NoteSeq from that slice
             return NoteSeq(self.items[i])
 
     def __len__(self):
@@ -203,14 +224,20 @@ class NoteSeq(collections.MutableSequence):
         return "<Seq: {0}>".format(self.items)
 
     def __eq__(self, other):
+        """Two NoteSeq objects are only equal if
+           all of their elements are pairwise equal
+        """
         if len(self) == len(other):
             return all(x == y for x, y in zip(self.items, other.items))
 
     def __add__(self, other):
         if isinstance(other, NoteSeq):
+            # Adding one NoteSeq to another NoteSeq: combine items
             return NoteSeq(self.items + other.items)
 
         elif isinstance(other, Note) or isinstance(other, Rest):
+            # Adding a Note or Rest to a NoteSeq: append that Note/Rest to the items
+            # ie. NoteSeq(1,2) + Note(3) => NoteSeq(1,2,3)
             return NoteSeq(self.items + [other])
 
 
@@ -221,6 +248,9 @@ class NoteSeq(collections.MutableSequence):
             return NoteSeq(other.items + self.items)
 
         elif isinstance(other, Note) or isinstance(other, Rest):
+            # Adding a NoteSeq to a Note/Rest: put that Note/Rest at 
+            # the beginning of the NoteSeq
+            # ie. Note(3) + NoteSeq(1,2)) => NoteSeq(3,1,2)
             return NoteSeq([other] + self.items)
 
 
@@ -233,12 +263,18 @@ class NoteSeq(collections.MutableSequence):
         return "<NoteSeq: [{0}]>".format(string)
 
     def retrograde(self):
+        """Reverse the sequence
+           "retrograde" is the musical term for "play it backward"
+        """
         return NoteSeq(list(reversed(self.items)))
 
     def insert(self, i, value):
         self.items.insert(i, value)
 
     def transposition(self, index):
+        """Transpose all Notes in the NoteSeq by `index` amount
+           See Note.transposition(index) for more details
+        """
         return NoteSeq([x.transposition(index) if isinstance(x, Note) else x
                         for x in self.items])
 
@@ -246,44 +282,71 @@ class NoteSeq(collections.MutableSequence):
         return Note(item) if (isinstance(item, int) or isinstance(item, str)) else item
 
     def transposition_startswith(self, note_start):
+        """transpose the NoteSeq such that the result starts with `note_start`
+        """
         note = self._make_note(note_start)
+        # determine the difference between `note_start` and the first item
+        # this is how far we need to transpose the first item in order to get to `note_start`
         return self.transposition(note - self.items[0])
 
     def inversion(self, index=0):
+        """Invert all Notes in the NoteSeq around `index` and the octave of the first note
+           See Note.inversion(index) for more details
+        """
         initial_octave = self.items[0].octave
         return NoteSeq([x.inversion(index, initial_octave) if isinstance(x, Note)
                         else x for x in self.items])
 
     def inversion_startswith(self, note_start):
+        """Invert all Notes in the NoteSeq
+           then transpose such that the first Note in the resulting 
+                NoteSeq is `note_start` 
+        """
         note = self._make_note(note_start)
+        # transpose all notes into the correct octave, then invert all notes
         inv = self.transposition_startswith(Note(0, note.octave)).inversion()
+        # transpose all notes so that we start at the desire note
         return inv.transposition_startswith(note)
 
     def harmonize(self, interval=3, size=3):
+        """Returns a list of harmonies formed from each note in the NoteSeq
+        """
         return [NoteSeq(note.harmonize(self, interval, size)) for note in self]
 
     def rotate(self, n=1):
-        modn = n % len(self)
+        """Simulates a N rotations
+            a single rotation removes the first item and adds it on to the end
+        """
+        modn = n % len(self)    # only need to rotate n mod length times
+                                # because rotation is periodic
         result = self.items[modn:] + self.items[0:modn]
         return NoteSeq(result)
 
     def stretch_dur(self, factor):
+        """Stretch all Notes and Rests by `factor`
+        """
         return NoteSeq([x.stretch_dur(factor) for x in self.items])
 
     ## TODO: gives an error with rests
     def intervals(self):
+        """Returns a list of the interval distance between successive pairs of Notes
+        """
         v1 = self[:]
         v2 = self.rotate()
 
         return [y - x for x, y in zip(v1, v2[:-1])]
 
     def stretch_interval(self, factor):
-        intervals = [x + factor for x in self.intervals()]
+        """Returns a NoteSeq where all interval distances between 
+           successive pairs of Notes are increased by `factor`
+        """
+        intervals = [x + factor for x in self.intervals()]  # list of new interval distances
         note = copy.copy(self[0])
         result = NoteSeq([note])
-        for i in intervals:
-            note = note.transposition(i)
-            result.append(note)
+        for i in intervals:                 # for each new interval distance:
+            note = note.transposition(i)    #   create a new Note transposed 
+                                            #     from the previous Note by that distance
+            result.append(note) 
         return result
 
     # Aliases
