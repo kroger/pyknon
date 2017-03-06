@@ -8,6 +8,9 @@ class MusiclibError(Exception):
 
 
 class Rest(object):
+    """Class representing a musical rest; basically a pause where no
+       Notes are playing.
+    """
     def __init__(self, dur=0.25):
         self.dur = dur
 
