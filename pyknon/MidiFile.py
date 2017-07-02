@@ -297,8 +297,7 @@ class MIDITrack:
         '''
         self.eventList.append(MIDITrack.trackName(time,trackName))
         
-    def changeNoteTuning(self,  tunings,   sysExChannel=0x7F,  realTime=False,  \
-        tuningProgam=0):
+    def changeNoteTuning(self, tunings, sysExChannel=0x7F, realTime=False, tuningProgam=0):
         '''Change the tuning of MIDI notes
         '''
         payload = struct.pack('>B',  tuningProgam)
@@ -308,7 +307,7 @@ class MIDITrack:
             MIDIFreqency = frequencyTransform(frequency)
             for byte in MIDIFreqency:
                 payload = payload + struct.pack('>B',  byte)
-                
+
         self.eventList.append(MIDITrack.UniversalSysExEvent(0, realTime,  sysExChannel,\
             8,  2, payload))
     
@@ -829,8 +828,8 @@ class MIDIFile:
         Also note that many software packages and hardware packages do not implement
         this standard!
         """
-        self.tracks[track].changeNoteTuning(tunings,   sysExChannel,  realTime,\
-                                              tuningProgam)
+
+        self.tracks[track].changeNoteTuning(tunings, sysExChannel, realTime, tuningProgam)
   
     def writeFile(self,fileHandle):
         '''
