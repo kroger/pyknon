@@ -55,11 +55,8 @@ class Midi(object):
 
         for note in noteseq:
             if isinstance(note, Note):
-                #print note.midi_number, track
+                # print note.midi_number, track
                 self.midi_data.addNote(track, _channel, note.midi_number, time, note.midi_dur, note.volume)
-            else:
-                # we ignore the rests
-                pass
             time += note.midi_dur
 
         return time

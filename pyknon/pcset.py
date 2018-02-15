@@ -1,15 +1,14 @@
-from pyknon.pc_sets import PC_SETS
 from pyknon.simplemusic import (mod12, interval, rotate, all_intervals, rotate_set,
                                 inversion, transposition_startswith,
                                 inversion_first_note)
 
 
 def set_sizes(pset):
-    return [interval(x, y) for x,y in zip(rotate(pset, len(pset) - 1), pset)]
+    return [interval(x, y) for x, y in zip(rotate(pset, len(pset) - 1), pset)]
 
 
 def set_size(pset):
-    ## pset must be sorted
+    # pset must be sorted
     return mod12(pset[-1] - pset[0])
 
 
@@ -17,7 +16,7 @@ def interval_vector(notes):
     vector = [0, 0, 0, 0, 0, 0]
 
     for i in all_intervals(notes):
-        vector[i-1] += 1
+        vector[i - 1] += 1
 
     return vector
 
@@ -67,5 +66,3 @@ def row_matrix_search(matrix, notes):
 
 def column_matrix_search(matrix, notes):
     return [[row.index(note) for note in notes] for row in zip(*matrix)]
-
-

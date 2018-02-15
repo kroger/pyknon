@@ -1,5 +1,4 @@
 import re
-from fractions import Fraction
 
 REGEX_NOTE = re.compile("([a-gA-GRr])([b#]*)([0-9]*)([.]*)([',]*)")
 
@@ -9,8 +8,12 @@ class NotationError(Exception):
 
 
 def parse_accidental(acc):
-    n = len(acc) if acc else 0
-    return -n if "b" in acc else n
+    n = len(acc)
+
+    if "b" in acc:
+        n *= -1
+
+    return n
 
 
 def parse_octave(string):

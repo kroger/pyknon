@@ -106,7 +106,7 @@ class Note(object):
 class NoteSeq(collections.MutableSequence):
     @staticmethod
     def _is_note_or_rest(args):
-        return all([True if isinstance(x, Note) or isinstance(x, Rest) else False for x in args])
+        return all([isinstance(x, Note) or isinstance(x, Rest) for x in args])
 
     @staticmethod
     def _make_note_or_rest(note_list):
@@ -118,10 +118,7 @@ class NoteSeq(collections.MutableSequence):
     @staticmethod
     def _parse_score(filename):
         with open(filename) as score:
-            notes = []
-            for line in score:
-                notes.extend([note for note in line.split()])
-            return notes
+            return [note for line in score for note in line.split()]
 
     def __init__(self, args=None):
         if isinstance(args, str):
@@ -174,7 +171,6 @@ class NoteSeq(collections.MutableSequence):
         elif isinstance(other, Note) or isinstance(other, Rest):
             return NoteSeq(self.items + [other])
 
-
     def __radd__(self, other):
         if isinstance(other, NoteSeq):
             #  This should never be called because the other NoteSeq should
@@ -183,7 +179,6 @@ class NoteSeq(collections.MutableSequence):
 
         elif isinstance(other, Note) or isinstance(other, Rest):
             return NoteSeq([other] + self.items)
-
 
     def __mul__(self, n):
         return NoteSeq(self.items * n)
@@ -231,7 +226,7 @@ class NoteSeq(collections.MutableSequence):
     def stretch_dur(self, factor):
         return NoteSeq([x.stretch_dur(factor) for x in self.items])
 
-    ## TODO: gives an error with rests
+    # TODO: gives an error with rests
     def intervals(self):
         v1 = self[:]
         v2 = self.rotate()
