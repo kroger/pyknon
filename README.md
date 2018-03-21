@@ -25,7 +25,7 @@ See the documentation for more details.
 
 # Documentation
 
-Pyknon needs better documentation. Meanwhile you can download [this free chapter](https://s3.amazonaws.com/musicforgeeksandnerds.com/Pyknon+from+Music+for+Geeks+and+Nerds.pdf) from [Music for Geeks and Nerds](http://musicforgeeksandnerds.com) that explains how to use Pyknon.
+Pyknon needs better documentation. Meanwhile you can download for free my book [Music for Geeks and Nerds](https://pedrokroger.net/mfgan/) that explains how to use Pyknon.
 
 # License
 
