@@ -1,10 +1,9 @@
 # Introduction
 
 Pyknon is a simple music library for Python hackers. With Pyknon you
-can generate Midi files quickly and reason about musical
-properties.
+can generate Midi files quickly and reason about musical properties.
 
-Pyknon works with Python 2.7 and 3.2.
+Pyknon works with Python 2.7 and 3.9.
 
 # Usage
 
@@ -25,11 +24,13 @@ See the documentation for more details.
 
 # Documentation
 
-Pyknon needs better documentation. Meanwhile you can download for free my book [Music for Geeks and Nerds](https://pedrokroger.net/mfgan/) that explains how to use Pyknon.
+Pyknon needs better documentation. Meanwhile you can download for free
+my book [Music for Geeks and Nerds](https://pedrokroger.net/mfgan/)
+that explains how to use Pyknon.
 
 # License
 
-This library is released under a MIT license. See the [LICENSE](LICENSE) file for
-more details.
+This library is released under a MIT license. See the
+[LICENSE](LICENSE) file for more details.
 
 Pyknon's MIDI module is heavily based on Mark Conway Wirt's MIDIUtil.
