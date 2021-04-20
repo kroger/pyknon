@@ -6,7 +6,7 @@ class MidiError(Exception):
     pass
 
 
-class Midi(object):
+class Midi:
     def __init__(self, number_tracks=1, tempo=60, instrument=0, channel=None):
         """
         instrument: can be an integer or a list
@@ -44,7 +44,8 @@ class Midi(object):
             elif isinstance(item, Rest):
                 time += item.midi_dur
             else:
-                raise MidiError("The input should be a list of NoteSeq but yours is a {0}: {1}".format(type(seqlist), seqlist))
+                note = "The input should be a list of NoteSeq but yours is a {0}: {1}"
+                raise MidiError(note.format(type(seqlist), seqlist))
         return time
 
     def seq_notes(self, noteseq, track=0, time=0, channel=None):
@@ -56,7 +57,8 @@ class Midi(object):
         for note in noteseq:
             if isinstance(note, Note):
                 #print note.midi_number, track
-                self.midi_data.addNote(track, _channel, note.midi_number, time, note.midi_dur, note.volume)
+                self.midi_data.addNote(track, _channel, note.midi_number, time, note.midi_dur,
+                                       note.volume)
             else:
                 # we ignore the rests
                 pass
@@ -65,7 +67,8 @@ class Midi(object):
         return time
 
     def change_tuning(self, track, tunings, real_time=False, tuning_program=0):
-        self.midi_data.changeNoteTuning(track, tunings, realTime=real_time, tuningProgam=tuning_program)
+        self.midi_data.changeNoteTuning(track, tunings, realTime=real_time,
+                                        tuningProgam=tuning_program)
 
     def write(self, filename):
         if isinstance(filename, str):

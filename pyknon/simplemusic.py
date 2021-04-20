@@ -6,13 +6,8 @@ generate actual music you should use the music module.
 
 """
 
-from __future__ import division
 from itertools import combinations, chain
 from fractions import Fraction
-
-
-class SimpleMusicError(Exception):
-    pass
 
 
 def mod12(n):
@@ -131,8 +126,8 @@ def get_quality(diatonic_interval, chromatic_interval):
     index_map = [-1, 0, 2, 4, 6, 7, 9]
     try:
         return quality_map[chromatic_interval - index_map[diatonic_interval]]
-    except IndexError:
-        raise SimpleMusicError("Sorry, I can't deal with this interval :-(")
+    except IndexError as no_interval:
+        raise Exception("Sorry, I can't deal with this interval") from no_interval
 
 
 def interval_name(note1, note2):

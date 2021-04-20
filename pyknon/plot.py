@@ -1,6 +1,5 @@
 import math
-from pyknon.simplemusic import inversion
-import Tkinter as Tk
+import tkinter as Tk
 
 
 MARGIN = 30
@@ -22,7 +21,7 @@ def scaled_points(radius):
     return [(x + radius + MARGIN, radius - y + MARGIN) for x, y in points]
 
 
-def plot_circle(canvas, width, points):
+def plot_circle(canvas, width):
     canvas.create_oval(MARGIN, width, width, MARGIN)
 
 
@@ -50,7 +49,7 @@ def canvas_notes(notes_list, width=400, is_black_and_white=False):
     points = scaled_points(radius)
     plot_points(canvas, points)
     plot_numbers(canvas, points)
-    plot_circle(canvas, width - MARGIN, points)
+    plot_circle(canvas, width - MARGIN)
     if is_black_and_white:
         for notes, dash in notes_list:
             plot_notes(notes, canvas, points, dash=dash)
@@ -60,13 +59,9 @@ def canvas_notes(notes_list, width=400, is_black_and_white=False):
     return canvas
 
 
-def view(notes_list, width=400):
-    canvas = canvas_notes(notes_list, width)
-
-
 def notes_ps(notes_list, filename, width=400, is_black_and_white=False):
     canvas = canvas_notes(notes_list, width, is_black_and_white=is_black_and_white)
-    L, T, R, B = canvas.bbox(Tk.ALL)
+    _, _, R, B = canvas.bbox(Tk.ALL)
     canvas.postscript(file=filename, height=B, width=R,
                       pageheight=B, pagewidth=R, x=0, y=0)
 

@@ -8,3 +8,6 @@ _build/
 .cache
 build/
 demo.mid
+chords.mid
+percussion.mid
+tracks.mid

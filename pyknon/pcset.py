@@ -1,4 +1,3 @@
-from pyknon.pc_sets import PC_SETS
 from pyknon.simplemusic import (mod12, interval, rotate, all_intervals, rotate_set,
                                 inversion, transposition_startswith,
                                 inversion_first_note)
@@ -60,12 +59,10 @@ def matrix(row):
     return [transposition_startswith(row, n) for n in inversion_first_note(row)]
 
 
-def row_matrix_search(matrix, notes):
+def row_matrix_search(_matrix, notes):
     # return positions
-    return [[row.index(note) for note in notes] for row in matrix]
+    return [[row.index(note) for note in notes] for row in _matrix]
 
 
-def column_matrix_search(matrix, notes):
-    return [[row.index(note) for note in notes] for row in zip(*matrix)]
-
-
+def column_matrix_search(_matrix, notes):
+    return [[row.index(note) for note in notes] for row in zip(*_matrix)]

@@ -1,4 +1,5 @@
 pytest
 sphinx
+pylint
 pytest-pep8
 pytest-cov

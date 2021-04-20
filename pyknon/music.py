@@ -7,7 +7,7 @@ class MusiclibError(Exception):
     pass
 
 
-class Rest(object):
+class Rest:
     def __init__(self, dur=0.25):
         self.dur = dur
 
@@ -30,7 +30,7 @@ class Rest(object):
         return Rest(self.dur * factor)
 
 
-class Note(object):
+class Note:
     def __init__(self, value=0, octave=5, dur=0.25, volume=100):
         if isinstance(value, str):
             self.value, self.octave, self.dur, self.volume = notation.parse_note(value)
@@ -103,10 +103,10 @@ class Note(object):
         return Note(self.value, self.octave, self.dur * factor, self.volume)
 
 
-class NoteSeq(MutableSequence):
+class NoteSeq(MutableSequence):  # pylint: disable=too-many-ancestors
     @staticmethod
     def _is_note_or_rest(args):
-        return all([True if isinstance(x, Note) or isinstance(x, Rest) else False for x in args])
+        return all(isinstance(x, (Note, Rest)) for x in args)
 
     @staticmethod
     def _make_note_or_rest(note_list):
@@ -167,20 +167,16 @@ class NoteSeq(MutableSequence):
     def __add__(self, other):
         if isinstance(other, NoteSeq):
             return NoteSeq(self.items + other.items)
-
-        elif isinstance(other, Note) or isinstance(other, Rest):
+        elif isinstance(other, (Note, Rest)):
             return NoteSeq(self.items + [other])
-
 
     def __radd__(self, other):
         if isinstance(other, NoteSeq):
             #  This should never be called because the other NoteSeq should
             #  handle the concatenation, but it's here for completness sake
             return NoteSeq(other.items + self.items)
-
-        elif isinstance(other, Note) or isinstance(other, Rest):
+        elif isinstance(other, (Note, Rest)):
             return NoteSeq([other] + self.items)
-
 
     def __mul__(self, n):
         return NoteSeq(self.items * n)
@@ -193,15 +189,16 @@ class NoteSeq(MutableSequence):
     def retrograde(self):
         return NoteSeq(list(reversed(self.items)))
 
-    def insert(self, i, value):
-        self.items.insert(i, value)
+    def insert(self, key, value):
+        self.items.insert(key, value)
 
     def transposition(self, index):
         return NoteSeq([x.transposition(index) if isinstance(x, Note) else x
                         for x in self.items])
 
-    def _make_note(self, item):
-        return Note(item) if (isinstance(item, int) or isinstance(item, str)) else item
+    @staticmethod
+    def _make_note(item):
+        return Note(item) if isinstance(item, (int, str)) else item
 
     def transposition_startswith(self, note_start):
         note = self._make_note(note_start)

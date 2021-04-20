@@ -6,6 +6,9 @@ test:
 coverage:
 	py.test --cov=pyknon --cov-report=html
 
+check:
+	pylint pyknon
+
 docs:
 	cd docs && make html
 
@@ -19,4 +22,3 @@ clean:
 
 cleanall: clean
 	rm -rf htmlcov docs/_build
-

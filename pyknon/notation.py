@@ -1,5 +1,5 @@
 import re
-from fractions import Fraction
+
 
 REGEX_NOTE = re.compile("([a-gA-GRr])([b#]*)([0-9]*)([.]*)([',]*)")
 
@@ -24,7 +24,7 @@ def parse_octave(string):
 
 
 def parse_dur(dur, dots=""):
-    if dur == 0 or dur == "breve" or dur == "brevis":
+    if dur in (0, "breve", "brevis"):
         base = 2
     elif dur == "longa":
         base = 4
