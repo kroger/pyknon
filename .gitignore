@@ -1,3 +1,4 @@
+.DS_Store
 *.swp
 *.pyc
 .coverage
@@ -6,3 +7,4 @@ htmlcov
 _build/
 .cache
 build/
+demo.mid

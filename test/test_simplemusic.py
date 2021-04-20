@@ -1,11 +1,5 @@
-from __future__ import division
 from fractions import Fraction as F
-
-try:
-    import unittest2 as unittest
-except:
-    import unittest
-
+import unittest
 import pyknon.simplemusic as music
 
 

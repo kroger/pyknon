@@ -1,4 +1,4 @@
-import collections
+from collections.abc import MutableSequence, Iterable
 import copy
 from pyknon import notation
 
@@ -103,7 +103,7 @@ class Note(object):
         return Note(self.value, self.octave, self.dur * factor, self.volume)
 
 
-class NoteSeq(collections.MutableSequence):
+class NoteSeq(MutableSequence):
     @staticmethod
     def _is_note_or_rest(args):
         return all([True if isinstance(x, Note) or isinstance(x, Rest) else False for x in args])
@@ -131,7 +131,7 @@ class NoteSeq(collections.MutableSequence):
             else:
                 note_lists = notation.parse_notes(args.split())
             self.items = [self._make_note_or_rest(x) for x in note_lists]
-        elif isinstance(args, collections.Iterable):
+        elif isinstance(args, Iterable):
             if self._is_note_or_rest(args):
                 self.items = args
             else:
