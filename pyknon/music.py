@@ -118,10 +118,7 @@ class NoteSeq(MutableSequence):
     @staticmethod
     def _parse_score(filename):
         with open(filename) as score:
-            notes = []
-            for line in score:
-                notes.extend([note for note in line.split()])
-            return notes
+            return [note for line in score for note in line.split()]
 
     def __init__(self, args=None):
         if isinstance(args, str):
