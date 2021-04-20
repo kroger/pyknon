@@ -100,6 +100,12 @@ class TestNote(unittest.TestCase):
 
 
 class TestNoteSeqOperations(unittest.TestCase):
+    def test_parse_score(self):
+        seq = NoteSeq("file://test/notes.txt")
+        note1 = Note("C")
+        note2 = seq[0]
+        self.assertEqual(note1, note2)
+
     def test_sum(self):
         seq1 = NoteSeq("C D E")
         seq2 = NoteSeq("F G A")
@@ -258,7 +264,7 @@ class TestNoteSeq(unittest.TestCase):
         seq1 = NoteSeq("C D E")
         seq2 = NoteSeq("D E F#")
         self.assertEqual(seq1.transposition_startswith("D"), seq2)
-        
+
 
     def test_transposition_startswith_rest(self):
         seq1 = NoteSeq("E G R C#")
