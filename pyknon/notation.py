@@ -2,6 +2,7 @@ import re
 
 
 REGEX_NOTE = re.compile("([a-gA-GRr])([b#]*)([0-9]*)([.]*)([',]*)")
+NOTE_NAMES = "c # d # e f # g # a # b".split()
 
 
 class NotationError(Exception):
@@ -36,13 +37,17 @@ def parse_dur(dur, dots=""):
     return sum([base / (2 ** x) for x in range(0, len(dots) + 1)])
 
 
+def note_number(pitch, acc):
+    pitch_number = NOTE_NAMES.index(pitch.lower())
+    return (pitch_number + parse_accidental(acc)) % 12
+
+
 def parse_note(note, volume=120, prev_octave=5, prev_dur=0.25):
-    note_names = "c # d # e f # g # a # b".split()
     m = REGEX_NOTE.match(note)
     if m:
         pitch, acc, dur, dots, octv = m.groups()
     else:
-        raise NotationError("You need to enter at least one note.")
+        raise NotationError("You need to have at least one note.")
 
     octave = parse_octave(octv) if octv else prev_octave
     duration = parse_dur(dur, dots) if dur else prev_dur
@@ -50,10 +55,7 @@ def parse_note(note, volume=120, prev_octave=5, prev_dur=0.25):
     if pitch in ["r", "R"]:
         return None, octave, duration, None
     else:
-        pitch_number = note_names.index(pitch.lower())
-        acc_number = parse_accidental(acc)
-        note_number = (pitch_number + acc_number) % 12
-        return note_number, octave, duration, volume
+        return note_number(pitch, acc), octave, duration, volume
 
 
 def parse_notes(notes, volume=120):
